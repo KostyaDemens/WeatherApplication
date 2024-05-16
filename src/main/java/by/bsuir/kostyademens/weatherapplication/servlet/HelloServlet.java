@@ -1,4 +1,4 @@
-package by.bsuir.kostyademens.weatherapplication;
+package by.bsuir.kostyademens.weatherapplication.servlet;
 
 import java.io.*;
 import jakarta.servlet.http.*;
