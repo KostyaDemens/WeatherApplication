@@ -8,9 +8,9 @@ public class UserDao {
 
     private final SessionFactoryUtil sessionFactoryUtil;
 
-    public UserDao(SessionFactoryUtil sessionFactoryUtil) {
-        this.sessionFactoryUtil = sessionFactoryUtil;
-        sessionFactoryUtil.init();
+    public UserDao() {
+        this.sessionFactoryUtil = SessionFactoryUtil.getInstance();
+
     }
 
     public void save(User user) {

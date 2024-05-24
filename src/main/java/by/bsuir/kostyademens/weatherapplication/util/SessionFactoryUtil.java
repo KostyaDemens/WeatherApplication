@@ -10,14 +10,10 @@ public class SessionFactoryUtil {
     @Getter
     private final static SessionFactoryUtil instance = new SessionFactoryUtil();
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
-    private SessionFactoryUtil(){}
-
-    public void init() {
-        sessionFactory = new Configuration()
-                .configure("hibernate.cfg.xml")
-                .buildSessionFactory();
+    private SessionFactoryUtil(){
+        sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
     }
 
     public Session getSession() {

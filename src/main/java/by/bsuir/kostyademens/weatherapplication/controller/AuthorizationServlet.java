@@ -8,11 +8,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/auth")
+@WebServlet("/authorization")
 public class AuthorizationServlet extends HttpServlet {
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("authorization");
         req.getRequestDispatcher("/templates/authorization.html").forward(req, resp);
     }
 }

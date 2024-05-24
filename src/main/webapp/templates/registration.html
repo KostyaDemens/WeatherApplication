@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,6 @@
         <div class="col-lg-4 bg-white m-auto rounded-top wrapper">
             <h2 class="text-center pt-3 mb-5">Sign up</h2>
 
-            <form action="#">
                 <div class="input-group mb-3">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                     <input type="text" class="form-control" placeholder="Login">
@@ -35,10 +34,9 @@
                 <div class="d-grid">
                     <button type="button" class="btn btn-success w-100 mb-4">Sign up</button>
                     <p class="text-center">
-                        Already have an account? <a href="authorization.html">Log in!</a>
+                        Already have an account? <a href="/authorization">Log in!</a>
                     </p>
                 </div>
-            </form>
         </div>
     </div>
 </div>
