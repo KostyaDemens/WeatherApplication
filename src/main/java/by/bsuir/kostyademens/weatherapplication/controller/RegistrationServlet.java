@@ -13,7 +13,15 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("registration");
         req.getRequestDispatcher("/templates/registration.html").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String login = req.getParameter("login");
+        String password = req.getParameter("password");
+        String confirmedPassword = req.getParameter("confirmedPassword");
+
+
     }
 }

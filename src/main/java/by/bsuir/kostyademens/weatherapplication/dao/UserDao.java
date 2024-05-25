@@ -2,7 +2,10 @@ package by.bsuir.kostyademens.weatherapplication.dao;
 
 import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
+import jakarta.persistence.NoResultException;
 import org.hibernate.Session;
+
+import java.util.Optional;
 
 public class UserDao {
 
@@ -18,6 +21,19 @@ public class UserDao {
             session.beginTransaction();
             session.persist(user);
             session.getTransaction().commit();
+        }
+    }
+
+    public Optional<User> findByLogin(String login) {
+        try (Session session = sessionFactoryUtil.getSession()) {
+            session.beginTransaction();
+            User user = session.createQuery("FROM User u WHERE u.login = :name", User.class)
+                    .setParameter("name", login)
+                    .getSingleResult();
+            session.getTransaction().commit();
+            return Optional.of(user);
+        } catch (NoResultException e) {
+            return Optional.empty();
         }
     }
 }

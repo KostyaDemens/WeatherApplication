@@ -14,14 +14,14 @@
     <title>Title</title>
 </head>
 <body class="bg-light">
+<form action="#" method="post" th:action="@{/registration}">
 <div class="container">
     <div class="row mt-5">
         <div class="col-lg-4 bg-white m-auto rounded-top wrapper">
             <h2 class="text-center pt-3 mb-5">Sign up</h2>
-
                 <div class="input-group mb-3">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="text" class="form-control" placeholder="Login">
+                    <input type="text" class="form-control" placeholder="Login" th:text="${login}">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
@@ -32,7 +32,7 @@
                     <input type="password" class="form-control" placeholder="Confirm password">
                 </div>
                 <div class="d-grid">
-                    <button type="button" class="btn btn-success w-100 mb-4">Sign up</button>
+                    <button type="submit" class="btn btn-success w-100 mb-4">Sign up</button>
                     <p class="text-center">
                         Already have an account? <a href="/authorization">Log in!</a>
                     </p>
@@ -40,6 +40,7 @@
         </div>
     </div>
 </div>
+</form>
 
 </body>
 </html>
