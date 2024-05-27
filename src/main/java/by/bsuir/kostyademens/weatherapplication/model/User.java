@@ -19,9 +19,14 @@ public class User {
     @Id
     private Long id;
 
-    @Column(name = "login", nullable = false)
-    private String login;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

@@ -13,7 +13,6 @@ public class UserDao {
 
     public UserDao() {
         this.sessionFactoryUtil = SessionFactoryUtil.getInstance();
-
     }
 
     public void save(User user) {
@@ -24,11 +23,11 @@ public class UserDao {
         }
     }
 
-    public Optional<User> findByLogin(String login) {
+    public Optional<User> findByLogin(String email) {
         try (Session session = sessionFactoryUtil.getSession()) {
             session.beginTransaction();
-            User user = session.createQuery("FROM User u WHERE u.login = :name", User.class)
-                    .setParameter("name", login)
+            User user = session.createQuery("FROM User u WHERE u.email = :email", User.class)
+                    .setParameter("email", email)
                     .getSingleResult();
             session.getTransaction().commit();
             return Optional.of(user);
