@@ -1,6 +1,5 @@
 package by.bsuir.kostyademens.weatherapplication.controller;
 
-import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.service.NewUserService;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -8,11 +7,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.thymeleaf.context.WebContext;
 
 import java.io.IOException;
 
 @WebServlet("/registration")
-public class RegistrationServlet extends HttpServlet {
+public class RegistrationServlet extends BaseServlet {
 
     private NewUserService userService;
 
@@ -34,7 +34,8 @@ public class RegistrationServlet extends HttpServlet {
 
 
         if (!userService.isValidEmail(email)) {
-            req.setAttribute("emailError", "Invalid email address");
+
+            context.setVariable("emailError", "Invalid email address");
             req.getRequestDispatcher("/templates/registration.html").forward(req, resp);
 
         }

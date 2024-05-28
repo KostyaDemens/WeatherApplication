@@ -1,7 +1,6 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
 import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
-import by.bsuir.kostyademens.weatherapplication.dto.UserDto;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 
 import javax.mail.internet.InternetAddress;
