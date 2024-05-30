@@ -3,7 +3,6 @@ package by.bsuir.kostyademens.weatherapplication.listener;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
-import jakarta.servlet.annotation.WebServlet;
 import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -13,13 +12,12 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 @WebListener
 public class ThymeleafListener implements ServletContextListener {
-    private ITemplateEngine templateEngine;
-    private JakartaServletWebApplication application;
+
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        this.application = JakartaServletWebApplication.buildApplication(sce.getServletContext());
-        this.templateEngine = buildTemplateEngine(this.application);
+        JakartaServletWebApplication application = JakartaServletWebApplication.buildApplication(sce.getServletContext());
+        ITemplateEngine templateEngine = buildTemplateEngine(application);
         sce.getServletContext().setAttribute("templateEngine", templateEngine);
     }
 

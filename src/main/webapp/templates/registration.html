@@ -8,29 +8,39 @@
           crossorigin="anonymous">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/templates/css/loginStyles.css">
+    <link rel="stylesheet" href="/static/css/loginStyles.css">
 
 
     <title>Title</title>
+
+
 </head>
 <body class="bg-light">
-<form action="#" method="post" th:action="@{/registration}">
+<form method="post" th:action="@{/registration}" class="needs-validation" novalidate>
 <div class="container">
     <div class="row mt-5">
         <div class="col-lg-4 bg-white m-auto rounded-top wrapper">
             <h2 class="text-center pt-3 mb-5">Sign up</h2>
-                <div class="input-group mb-3">
+                <div class="input-group mb-3 has-validation">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="text" class="form-control" placeholder="Email" name="email">
+                    <input type="text" class="form-control" placeholder="Email" name="email" required>
+                    <div class="invalid-feedback" th:if="${emailError != null}" th:text="${emailError}">
+
+                    </div>
                 </div>
-                <div class="text-danger" th:if="${emailError}" th:text="${emailError}"></div>
-                <div class="input-group mb-3">
+                <div class="input-group mb-3 has-validation">
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input type="password" class="form-control" placeholder="Password" name="password">
+                    <input type="password" class="form-control" placeholder="Password" name="password" required>
+                    <div class="invalid-feedback" th:text="${emailError}">
+
+                    </div>
                 </div>
-                <div class="input-group mb-3">
+                <div class="input-group mb-3 has-validation">
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input type="password" class="form-control" placeholder="Confirm password" name="confirmedPassword">
+                    <input type="password" class="form-control" placeholder="Confirm password" name="confirmedPassword" required>
+                    <div class="invalid-feedback" th:text="${emailError}">
+
+                    </div>
                 </div>
                 <div class="d-grid">
                     <button type="submit" class="btn btn-success w-100 mb-4">Sign up</button>
@@ -43,5 +53,27 @@
 </div>
 </form>
 
+<script>
+    (function () {
+        'use strict'
+        // Получите все формы, к которым мы хотим применить пользовательские стили проверки Bootstrap
+        var forms = document.querySelectorAll('.needs-validation')
+        // Зацикливайтесь на них и предотвращайте отправку
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+
 </body>
+
+
 </html>

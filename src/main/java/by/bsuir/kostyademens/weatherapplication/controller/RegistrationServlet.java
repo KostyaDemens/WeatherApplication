@@ -1,25 +1,15 @@
 package by.bsuir.kostyademens.weatherapplication.controller;
 
-import by.bsuir.kostyademens.weatherapplication.service.NewUserService;
-import jakarta.servlet.ServletConfig;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.thymeleaf.context.WebContext;
 
 import java.io.IOException;
 
 @WebServlet("/registration")
 public class RegistrationServlet extends BaseServlet {
-
-    private NewUserService userService;
-
-    @Override
-    public void init(ServletConfig config) {
-        userService = (NewUserService) config.getServletContext().getAttribute("newUserService");
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,12 +24,10 @@ public class RegistrationServlet extends BaseServlet {
 
 
         if (!userService.isValidEmail(email)) {
-
             context.setVariable("emailError", "Invalid email address");
+            req.setAttribute("thymeleafContext", context);
             req.getRequestDispatcher("/templates/registration.html").forward(req, resp);
-
         }
-
 
     }
 }
