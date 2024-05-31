@@ -24,10 +24,12 @@ public class RegistrationServlet extends BaseServlet {
 
 
         if (!userService.isValidEmail(email)) {
-            context.setVariable("emailError", "Invalid email address");
-            req.setAttribute("thymeleafContext", context);
-            req.getRequestDispatcher("/templates/registration.html").forward(req, resp);
+            context.setVariable("emailError", "Please, enter a valid email address");
         }
+        if (!password.equals(confirmedPassword)) {
+            context.setVariable("passwordError", "Please, ensure passwords are the same");
+        }
+        engine.process("registration", context, resp.getWriter());
 
     }
 }
