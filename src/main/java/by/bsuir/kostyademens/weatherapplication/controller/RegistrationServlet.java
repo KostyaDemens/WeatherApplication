@@ -1,10 +1,12 @@
 package by.bsuir.kostyademens.weatherapplication.controller;
 
 
+import by.bsuir.kostyademens.weatherapplication.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
@@ -25,9 +27,19 @@ public class RegistrationServlet extends BaseServlet {
 
         if (!userService.isValidEmail(email)) {
             context.setVariable("emailError", "Please, enter a valid email address");
+        } else if (userService.isUserExists(email)) {
+            context.setVariable("emailError", "User with this username already exists");
         }
         if (!password.equals(confirmedPassword)) {
             context.setVariable("passwordError", "Please, ensure passwords are the same");
+        } else if (userService.isValidEmail(email) && !userService.isUserExists(email)) {
+
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
+            User user = new User(email, hashedPassword);
+            userService.createNewUser(user);
+            req.getRequestDispatcher("/templates/authorization.html").forward(req, resp);
+            return;
         }
         engine.process("registration", context, resp.getWriter());
 

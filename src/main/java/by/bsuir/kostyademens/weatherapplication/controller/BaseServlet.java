@@ -1,6 +1,6 @@
 package by.bsuir.kostyademens.weatherapplication.controller;
 
-import by.bsuir.kostyademens.weatherapplication.service.NewUserService;
+import by.bsuir.kostyademens.weatherapplication.service.UserService;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class BaseServlet extends HttpServlet {
 
-    protected NewUserService userService = new NewUserService();
+    protected UserService userService = new UserService();
     protected TemplateEngine engine;
 
     protected WebContext context;
@@ -29,7 +29,7 @@ public class BaseServlet extends HttpServlet {
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         webExchange = JakartaServletWebApplication.buildApplication(getServletContext()).buildExchange(req, resp);
         context = new WebContext(webExchange);
         try{
