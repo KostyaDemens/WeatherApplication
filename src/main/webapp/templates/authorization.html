@@ -13,21 +13,24 @@
     <title>Log in</title>
 </head>
 <body class="bg-light">
-<div class="container">
+<form method="post" th:action="@{/authorization}" class="needs-validation" novalidate>
+
+    <div class="container">
     <div class="row mt-5">
         <div class="col-lg-4 bg-white m-auto rounded-top wrapper">
             <h2 class="text-center pt-3 mb-5">Log in</h2>
 
                 <div class="input-group mb-3">
                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="text" class="form-control" placeholder="Login">
+                    <input type="text" class="form-control" placeholder="Login" name="email" required>
                 </div>
-                <div class="input-group mb-3">
+            <div class="input-group mb-0">
                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                    <input type="text" class="form-control" placeholder="Password">
+                <input type="text" class="form-control" placeholder="Password" name="password" required>
                 </div>
+            <div class="error-message mb-3" th:text="${authError}"></div>
                 <div class="d-grid">
-                    <button type="button" class="btn btn-success w-100 mb-4">Log in</button>
+                    <button type="submit" class="btn btn-success w-100 mb-4">Log in</button>
                     <p class="text-center">
                         Don't have an account yet? <a href="/registration">Create one!</a>
                     </p>
@@ -35,6 +38,26 @@
         </div>
     </div>
 </div>
+</form>
+
+<script>
+    (function () {
+        'use strict'
+        // Получите все формы, к которым мы хотим применить пользовательские стили проверки Bootstrap
+        var forms = document.querySelectorAll('.needs-validation')
+        // Зацикливайтесь на них и предотвращайте отправку
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
 
 </body>
 </html>
