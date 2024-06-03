@@ -29,13 +29,13 @@ public class AuthorizationServlet extends BaseServlet {
         if (email != null && password != null) {
 
         if (userReqDto != null && BCrypt.checkpw(password, userReqDto.getPassword())) {
-            resp.sendRedirect(req.getContextPath() + "/main-page");
+            resp.sendRedirect(req.getContextPath() + "/home-page");
             return;
         } else {
             context.setVariable("authError", "Invalid username or password");
         }
         } else {
-            req.getRequestDispatcher("/templates/authorization.html").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/home-page");
         }
         engine.process("authorization", context, resp.getWriter());
     }

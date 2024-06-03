@@ -20,7 +20,7 @@ public class RegistrationServlet extends BaseServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         String confirmedPassword = req.getParameter("confirmedPassword");
@@ -39,11 +39,11 @@ public class RegistrationServlet extends BaseServlet {
 
             User user = new User(email, hashedPassword);
             userService.createNewUser(user);
-            req.getRequestDispatcher("/templates/authorization.html").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/authorization");
             return;
         }
         } else {
-            req.getRequestDispatcher("/templates/registration.html").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/registration");
         }
 
         engine.process("registration", context, resp.getWriter());
