@@ -11,7 +11,7 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Users")
+@Table(name = "Users", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 public class User {
 
     @Column(name = "id")
@@ -19,7 +19,7 @@ public class User {
     @Id
     private Long id;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)

@@ -1,6 +1,7 @@
-package by.bsuir.kostyademens.weatherapplication.controller;
+package by.bsuir.kostyademens.weatherapplication.controller.auth;
 
 
+import by.bsuir.kostyademens.weatherapplication.controller.BaseServlet;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,7 +25,7 @@ public class RegistrationServlet extends BaseServlet {
         String password = req.getParameter("password");
         String confirmedPassword = req.getParameter("confirmedPassword");
 
-
+        if (email != null && password != null && confirmedPassword != null) {
         if (!userService.isValidEmail(email)) {
             context.setVariable("emailError", "Please, enter a valid email address");
         } else if (userService.isUserExists(email)) {
@@ -41,6 +42,10 @@ public class RegistrationServlet extends BaseServlet {
             req.getRequestDispatcher("/templates/authorization.html").forward(req, resp);
             return;
         }
+        } else {
+            req.getRequestDispatcher("/templates/registration.html").forward(req, resp);
+        }
+
         engine.process("registration", context, resp.getWriter());
 
     }

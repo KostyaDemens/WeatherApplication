@@ -1,5 +1,6 @@
-package by.bsuir.kostyademens.weatherapplication.controller;
+package by.bsuir.kostyademens.weatherapplication.controller.auth;
 
+import by.bsuir.kostyademens.weatherapplication.controller.BaseServlet;
 import by.bsuir.kostyademens.weatherapplication.dto.UserReqDto;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,18 +19,23 @@ public class AuthorizationServlet extends BaseServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
 
         UserReqDto userReqDto = userService.findByLogin(email);
 
+        if (email != null && password != null) {
+
         if (userReqDto != null && BCrypt.checkpw(password, userReqDto.getPassword())) {
             resp.sendRedirect(req.getContextPath() + "/main-page");
             return;
         } else {
             context.setVariable("authError", "Invalid username or password");
+        }
+        } else {
+            req.getRequestDispatcher("/templates/authorization.html").forward(req, resp);
         }
         engine.process("authorization", context, resp.getWriter());
     }
