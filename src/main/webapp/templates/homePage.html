@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-0d6yfPzlD6FhFPejryye7oM9yyP2tFyw7j0T6H1zl0Q5Z1G1n0l0ot/5p1byqB8d"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark wrapper">
+    <div class="container-fluid">
+        <button class="btn btn-transparent border border-white text-white" type="button">
+            Logout
+        </button>
+
+        <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
+            <form class="d-flex input-group w-auto ms-lg-3 my-3 my-lg-0" method="post" th:action="@{/home-page}">
+                <input type="search" class="form-control bg-transparent border border-white text-white" placeholder="Search" aria-label="Search" />
+                <button class="btn" type="button">
+                    <i class="bi bi-search text-white fs-6"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
 </body>
 </html>
