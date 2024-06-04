@@ -19,7 +19,7 @@ public class AuthorizationServlet extends BaseServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
@@ -34,6 +34,7 @@ public class AuthorizationServlet extends BaseServlet {
         } else {
             context.setVariable("authError", "Invalid username or password");
         }
+
         } else {
             resp.sendRedirect(req.getContextPath() + "/home-page");
         }
