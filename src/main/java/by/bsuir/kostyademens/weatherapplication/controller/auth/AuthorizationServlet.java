@@ -2,6 +2,9 @@ package by.bsuir.kostyademens.weatherapplication.controller.auth;
 
 import by.bsuir.kostyademens.weatherapplication.controller.BaseServlet;
 import by.bsuir.kostyademens.weatherapplication.dto.UserReqDto;
+import by.bsuir.kostyademens.weatherapplication.mapper.ModelMapperUtil;
+import by.bsuir.kostyademens.weatherapplication.model.Session;
+import by.bsuir.kostyademens.weatherapplication.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +39,8 @@ public class AuthorizationServlet extends BaseServlet {
         }
 
         } else {
+            Session session = authorizationService.login(ModelMapperUtil.getModelMapper().map(userReqDto, User.class));
+            resp.addCookie(authorizationService.getNewCookie(session));
             resp.sendRedirect(req.getContextPath() + "/home-page");
         }
         engine.process("authorization", context, resp.getWriter());

@@ -1,5 +1,6 @@
 package by.bsuir.kostyademens.weatherapplication.controller;
 
+import by.bsuir.kostyademens.weatherapplication.service.AuthorizationService;
 import by.bsuir.kostyademens.weatherapplication.service.UserService;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -17,6 +18,7 @@ import java.io.IOException;
 public class BaseServlet extends HttpServlet {
 
     protected UserService userService = new UserService();
+    protected AuthorizationService authorizationService = new AuthorizationService();
     protected TemplateEngine engine;
 
     protected WebContext context;
