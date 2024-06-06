@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
@@ -13,11 +14,16 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Locations")
+@Table(name = "Sessions")
 public class Session {
 
-    @Column(name = "id")
     @Id
+    @GeneratedValue(generator = "GUID")
+    @GenericGenerator(
+            name = "GUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", nullable = false)
     private String id;
 
     @OneToOne

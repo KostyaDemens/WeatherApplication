@@ -18,7 +18,7 @@ import java.io.IOException;
 public class BaseServlet extends HttpServlet {
 
     protected UserService userService = new UserService();
-    protected AuthorizationService authorizationService = new AuthorizationService();
+    protected AuthorizationService authService = new AuthorizationService();
     protected TemplateEngine engine;
 
     protected WebContext context;

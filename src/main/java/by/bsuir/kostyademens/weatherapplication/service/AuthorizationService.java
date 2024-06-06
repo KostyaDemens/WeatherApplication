@@ -2,21 +2,34 @@ package by.bsuir.kostyademens.weatherapplication.service;
 
 import by.bsuir.kostyademens.weatherapplication.dao.SessionDao;
 import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
+
+import by.bsuir.kostyademens.weatherapplication.dto.UserReqDto;
+import by.bsuir.kostyademens.weatherapplication.exception.AuthorizationException;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.model.User;
+import by.bsuir.kostyademens.weatherapplication.validator.PasswordValidator;
 import jakarta.servlet.http.Cookie;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class AuthorizationService {
     private final SessionDao sessionDao = new SessionDao();
+    private final UserDao userDao = new UserDao();
 
-    public Session login(User user) {
-
-            Session session = getNewSession(user);
-            sessionDao.save(session);
-
-        return session;
+    public Session login(UserReqDto userReqDto) {
+        Optional<User> user = userDao.findByLogin(userReqDto.getEmail());
+        if (user.isPresent()) {
+            if (PasswordValidator.checkPassword(userReqDto.getPassword(), user.get().getPassword())) {
+                Session session = getNewSession(user.get());
+                sessionDao.save(session);
+                return session;
+            } else {
+                throw new AuthorizationException("Invalid username or password");
+            }
+        } else {
+            throw new AuthorizationException("Invalid username or password");
+        }
     }
 
     public Cookie getNewCookie(Session session) {

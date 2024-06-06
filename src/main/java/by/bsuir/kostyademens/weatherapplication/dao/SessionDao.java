@@ -14,7 +14,7 @@ public class SessionDao {
     public void save(Session entity) {
         try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
             session.beginTransaction();
-            session.persist(session);
+            session.persist(entity);
             session.getTransaction().commit();
         }
     }
