@@ -2,12 +2,16 @@ package by.bsuir.kostyademens.weatherapplication.controller.auth;
 
 
 import by.bsuir.kostyademens.weatherapplication.controller.BaseServlet;
+import by.bsuir.kostyademens.weatherapplication.exception.EmailInvalidException;
+import by.bsuir.kostyademens.weatherapplication.exception.PasswordMismatchException;
+import by.bsuir.kostyademens.weatherapplication.exception.UserAlreadyExistsException;
 import by.bsuir.kostyademens.weatherapplication.model.User;
+import by.bsuir.kostyademens.weatherapplication.validator.ParameterValidator;
+import by.bsuir.kostyademens.weatherapplication.validator.PasswordValidator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
@@ -25,25 +29,18 @@ public class RegistrationServlet extends BaseServlet {
         String password = req.getParameter("password");
         String confirmedPassword = req.getParameter("confirmedPassword");
 
-        if (email != null && password != null && confirmedPassword != null) {
-        if (!userService.isValidEmail(email)) {
-            context.setVariable("emailError", "Please, enter a valid email address");
-        } else if (userService.isUserExists(email)) {
-            context.setVariable("emailError", "User with this username already exists");
-        }
-        if (!password.equals(confirmedPassword)) {
-            context.setVariable("passwordError", "Please, ensure passwords are the same");
-        } else if (userService.isValidEmail(email) && !userService.isUserExists(email)) {
+        User user = new User(email, password);
 
-            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-
-            User user = new User(email, hashedPassword);
-            userService.createNewUser(user);
-            resp.sendRedirect(req.getContextPath() + "/authorization");
-            return;
-        }
-        } else {
-            resp.sendRedirect(req.getContextPath() + "/registration");
+        try {
+            if (ParameterValidator.areNotNull(email, password, confirmedPassword)) {
+                PasswordValidator.validatePasswordMatch(password, confirmedPassword);
+                registerService.register(user);
+                resp.sendRedirect(req.getContextPath() + "/authorization");
+            }
+        } catch (UserAlreadyExistsException | EmailInvalidException e) {
+            context.setVariable("emailError", e.getMessage());
+        } catch (PasswordMismatchException e) {
+            context.setVariable("passwordError", e.getMessage());
         }
 
         engine.process("registration", context, resp.getWriter());
