@@ -6,6 +6,7 @@ import by.bsuir.kostyademens.weatherapplication.exception.EmailInvalidException;
 import by.bsuir.kostyademens.weatherapplication.exception.PasswordMismatchException;
 import by.bsuir.kostyademens.weatherapplication.exception.UserAlreadyExistsException;
 import by.bsuir.kostyademens.weatherapplication.model.User;
+import by.bsuir.kostyademens.weatherapplication.validator.EmailValidator;
 import by.bsuir.kostyademens.weatherapplication.validator.ParameterValidator;
 import by.bsuir.kostyademens.weatherapplication.validator.PasswordValidator;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/registration")
 public class RegistrationServlet extends BaseServlet {
@@ -31,19 +34,34 @@ public class RegistrationServlet extends BaseServlet {
 
         User user = new User(email, password);
 
-        try {
+
+        Map<String, String> errors = new HashMap<>();
+
             if (ParameterValidator.areNotNull(email, password, confirmedPassword)) {
-                PasswordValidator.validatePasswordMatch(password, confirmedPassword);
-                registerService.register(user);
-                resp.sendRedirect(req.getContextPath() + "/authorization");
+                try {
+                    PasswordValidator.validatePasswordMatch(password, confirmedPassword);
+                } catch (PasswordMismatchException e) {
+                    errors.put("passwordError", e.getMessage());
+                }
+
+                try {
+                    EmailValidator.isValidEmail(email);
+                } catch (EmailInvalidException e) {
+                    errors.put("emailError", e.getMessage());
+                }
+
+                if (errors.isEmpty()) {
+                    try {
+                        registerService.register(user);
+                        resp.sendRedirect(req.getContextPath() + "/authorization");
+                        return;
+                    } catch (UserAlreadyExistsException e) {
+                        errors.put("emailError", e.getMessage());
+                    }
+                }
+
+                errors.forEach(context::setVariable);
+                engine.process("registration", context, resp.getWriter());
             }
-        } catch (UserAlreadyExistsException | EmailInvalidException e) {
-            context.setVariable("emailError", e.getMessage());
-        } catch (PasswordMismatchException e) {
-            context.setVariable("passwordError", e.getMessage());
         }
-
-        engine.process("registration", context, resp.getWriter());
-
     }
-}
