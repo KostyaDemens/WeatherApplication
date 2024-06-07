@@ -8,7 +8,12 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.Optional;
 
 public class RegistrationService {
-    private final UserDao userDao = new UserDao();
+    private final UserDao userDao;
+
+    public RegistrationService(UserDao userDao) {
+        this.userDao = new UserDao();
+    }
+
 
     public void register(User user) {
         Optional<User> potentialUser = userDao.findByLogin(user.getEmail());

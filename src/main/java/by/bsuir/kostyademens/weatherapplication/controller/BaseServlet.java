@@ -1,5 +1,6 @@
 package by.bsuir.kostyademens.weatherapplication.controller;
 
+import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
 import by.bsuir.kostyademens.weatherapplication.service.AuthorizationService;
 import by.bsuir.kostyademens.weatherapplication.service.RegistrationService;
 import jakarta.servlet.ServletConfig;
@@ -18,7 +19,7 @@ import java.io.IOException;
 public class BaseServlet extends HttpServlet {
 
     protected AuthorizationService authService = new AuthorizationService();
-    protected RegistrationService registerService = new RegistrationService();
+    protected RegistrationService registerService = new RegistrationService(new UserDao());
     protected TemplateEngine engine;
 
     protected WebContext context;

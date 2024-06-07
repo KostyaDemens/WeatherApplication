@@ -8,7 +8,7 @@ import org.hibernate.cfg.Configuration;
 public class SessionFactoryUtil {
 
     @Getter
-    private static SessionFactoryUtil instance = new SessionFactoryUtil();
+    private static final SessionFactoryUtil instance = new SessionFactoryUtil();
 
     private final SessionFactory sessionFactory;
 
