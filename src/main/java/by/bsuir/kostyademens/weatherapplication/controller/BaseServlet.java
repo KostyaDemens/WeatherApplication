@@ -19,7 +19,7 @@ import java.io.IOException;
 public class BaseServlet extends HttpServlet {
 
     protected AuthorizationService authService = new AuthorizationService();
-    protected RegistrationService registerService = new RegistrationService(new UserDao());
+    protected RegistrationService registerService = new RegistrationService();
     protected TemplateEngine engine;
 
     protected WebContext context;
