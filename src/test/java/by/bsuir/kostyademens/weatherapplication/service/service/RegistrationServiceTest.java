@@ -1,8 +1,10 @@
 package by.bsuir.kostyademens.weatherapplication.service.service;
 
 import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
+import by.bsuir.kostyademens.weatherapplication.exception.UserAlreadyExistsException;
 import by.bsuir.kostyademens.weatherapplication.model.User;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import by.bsuir.kostyademens.weatherapplication.service.RegistrationService;
@@ -11,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -27,17 +28,35 @@ class RegistrationServiceTest {
     private UserDao userDao;
 
 
+    private User user;
+
+    @BeforeEach
+    void prepare() {
+        user = new User("Vova", "123");
+    }
+
     @Test
     void createNewUser_ShouldInvokeSaveOnUserDao() {
-        User user = new User("Vova", "123");
-
-        // Выполнение метода createNewUser
         registrationService.createNewUser(user);
 
-        //Проверка. Метод был вызван один раз с параметром user
         verify(userDao, times(1)).save(user);
     }
 
+    @Test
+    void registerUser_ShouldThrowUserAlreadyExistsException() {
+        when(userDao.findByLogin(user.getEmail())).thenReturn(Optional.of(user));
+
+        assertThrows(UserAlreadyExistsException.class, () -> registrationService.register(user));
+    }
+
+    @Test
+    void registerUser_ShouldCreateNewUserSuccessfully() {
+        when(userDao.findByLogin(user.getEmail())).thenReturn(Optional.empty());
+
+        registrationService.register(user);
+
+        verify(userDao, times(1)).save(user);
+    }
 
 
 }
