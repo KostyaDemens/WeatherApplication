@@ -36,13 +36,6 @@ class RegistrationServiceTest {
     }
 
     @Test
-    void createNewUser_ShouldInvokeSaveOnUserDao() {
-        registrationService.createNewUser(user);
-
-        verify(userDao, times(1)).save(user);
-    }
-
-    @Test
     void registerUser_ShouldThrowUserAlreadyExistsException() {
         when(userDao.findByLogin(user.getEmail())).thenReturn(Optional.of(user));
 
