@@ -3,7 +3,7 @@ package by.bsuir.kostyademens.weatherapplication.service;
 import by.bsuir.kostyademens.weatherapplication.dao.SessionDao;
 import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
 
-import by.bsuir.kostyademens.weatherapplication.dto.UserReqDto;
+import by.bsuir.kostyademens.weatherapplication.dto.UserDto;
 import by.bsuir.kostyademens.weatherapplication.exception.AuthorizationException;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.model.User;
@@ -17,10 +17,10 @@ public class AuthorizationService {
     private final SessionDao sessionDao = new SessionDao();
     private final UserDao userDao = new UserDao();
 
-    public Session login(UserReqDto userReqDto) {
-        Optional<User> user = userDao.findByLogin(userReqDto.getEmail());
+    public Session login(UserDto userDto) {
+        Optional<User> user = userDao.findByLogin(userDto.getEmail());
         if (user.isPresent()) {
-            if (PasswordValidator.checkPassword(userReqDto.getPassword(), user.get().getPassword())) {
+            if (PasswordValidator.checkPassword(userDto.getPassword(), user.get().getPassword())) {
                 Session session = getNewSession(user.get());
                 sessionDao.save(session);
                 return session;

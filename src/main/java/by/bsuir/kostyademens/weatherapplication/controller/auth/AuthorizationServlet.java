@@ -1,7 +1,7 @@
 package by.bsuir.kostyademens.weatherapplication.controller.auth;
 
 import by.bsuir.kostyademens.weatherapplication.controller.BaseServlet;
-import by.bsuir.kostyademens.weatherapplication.dto.UserReqDto;
+import by.bsuir.kostyademens.weatherapplication.dto.UserDto;
 import by.bsuir.kostyademens.weatherapplication.exception.AuthorizationException;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.validator.ParameterValidator;
@@ -25,11 +25,11 @@ public class AuthorizationServlet extends BaseServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        UserReqDto userReqDto = new UserReqDto(email, password);
+        UserDto userDto = new UserDto(email, password);
 
         try {
             if (ParameterValidator.areNotNull(email, password)) {
-                Session session = authService.login(userReqDto);
+                Session session = authService.login(userDto);
                 resp.addCookie(authService.getNewCookie(session));
                 resp.sendRedirect(req.getContextPath() + "/home-page");
             }

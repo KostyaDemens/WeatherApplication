@@ -1,4 +1,4 @@
-package by.bsuir.kostyademens.weatherapplication.service.service;
+package by.bsuir.kostyademens.weatherapplication.service;
 
 import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
 import by.bsuir.kostyademens.weatherapplication.exception.UserAlreadyExistsException;
