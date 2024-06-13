@@ -33,4 +33,10 @@ public class Location {
 
     @Column(name = "longitude")
     private BigDecimal longitude;
+
+    public Location(String name, BigDecimal latitude, BigDecimal longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
