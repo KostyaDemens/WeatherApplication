@@ -1,8 +1,11 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
+import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +15,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class OpenWeatherService {
+
+    private LocationDao locationDao;
 
     private final String API_KEY = "3725ced7f88e411534bfa17a8f93d01a";
 
@@ -38,6 +45,7 @@ public class OpenWeatherService {
 
             location = new Location(name, latitude, longitude);
 
+            saveLocation(location);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -51,6 +59,10 @@ public class OpenWeatherService {
                 json, new TypeToken<Map<String, Object>>() {
                 }.getType()
         );
+    }
+
+    private void saveLocation(Location location) {
+        locationDao.save(location);
     }
 
     private void readJson(HttpURLConnection connection, StringBuilder result) throws IOException {
