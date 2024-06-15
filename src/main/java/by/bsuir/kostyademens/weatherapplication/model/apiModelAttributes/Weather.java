@@ -1,8 +1,12 @@
 package by.bsuir.kostyademens.weatherapplication.model.apiModelAttributes;
 
-public enum Weather {
+import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-    CLEAR_SKY, FEW_CLOUDS, SCATTERED_CLOUDS,
-    BROKEN_CLOUDS, SHOWER_RAIN, RAIN,
-    THUNDERSTORM, SNOW, MIST
+@AllArgsConstructor
+@Data
+public class Weather {
+
+    private String description;
 }

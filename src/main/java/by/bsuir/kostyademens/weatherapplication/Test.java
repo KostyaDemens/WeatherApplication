@@ -6,8 +6,8 @@ import by.bsuir.kostyademens.weatherapplication.service.OpenWeatherService;
 public class Test {
     public static void main(String[] args) {
         LocationDao locationDao = new LocationDao();
-        OpenWeatherService openWeatherService = new OpenWeatherService(locationDao);
+        OpenWeatherService openWeatherService = new OpenWeatherService();
 
-        openWeatherService.getLocationByName("London");
+        openWeatherService.getLocationByName("Minsk");
     }
 }

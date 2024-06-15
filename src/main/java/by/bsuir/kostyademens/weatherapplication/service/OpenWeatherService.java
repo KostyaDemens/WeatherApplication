@@ -2,7 +2,9 @@ package by.bsuir.kostyademens.weatherapplication.service;
 
 import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
+import by.bsuir.kostyademens.weatherapplication.model.LocationApiResponse;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -26,40 +28,25 @@ public class OpenWeatherService {
     private final String WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather";
 
     public void getLocationByName(String locationName) {
-        Location location;
         try {
             StringBuilder result = new StringBuilder();
-            String urlString = WEATHER_API_URL + "?q=" + locationName + "&appid=" + API_KEY;
+            String urlString = WEATHER_API_URL + "?q=" + locationName + "&appid=" + API_KEY + "&units=metric";
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
             readJson(connection, result);
 
-            Map<String, Object> respMap = jsonToMap(result.toString());
-            Map<String, Object> coordMap = jsonToMap(respMap.get("coord").toString());
+            Gson gson = new GsonBuilder().create();
+            LocationApiResponse locationApiResponse = gson.fromJson(String.valueOf(result), LocationApiResponse.class);
 
-            String name = (String) respMap.get("name");
-            BigDecimal latitude = BigDecimal.valueOf((Double) coordMap.get("lat"));
-            BigDecimal longitude = BigDecimal.valueOf((Double) coordMap.get("lon"));
 
-//            location = new Location(name, latitude, longitude);
-
-//            saveLocation(location);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-//        return location;
-
     }
 
-    private Map<String, Object> jsonToMap(String json) {
-        return new Gson().fromJson(
-                json, new TypeToken<Map<String, Object>>() {
-                }.getType()
-        );
-    }
 
     private void readJson(HttpURLConnection connection, StringBuilder result) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
