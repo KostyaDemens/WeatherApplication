@@ -25,7 +25,7 @@ public class OpenWeatherService {
 
     private final String WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather";
 
-    public Location getLocationByName(String locationName) {
+    public void getLocationByName(String locationName) {
         Location location;
         try {
             StringBuilder result = new StringBuilder();
@@ -37,20 +37,20 @@ public class OpenWeatherService {
             readJson(connection, result);
 
             Map<String, Object> respMap = jsonToMap(result.toString());
-            Map<String, Object> mainMap = jsonToMap(respMap.get("coord").toString());
+            Map<String, Object> coordMap = jsonToMap(respMap.get("coord").toString());
 
             String name = (String) respMap.get("name");
-            BigDecimal latitude = BigDecimal.valueOf((Double) mainMap.get("lat"));
-            BigDecimal longitude = BigDecimal.valueOf((Double) mainMap.get("lon"));
+            BigDecimal latitude = BigDecimal.valueOf((Double) coordMap.get("lat"));
+            BigDecimal longitude = BigDecimal.valueOf((Double) coordMap.get("lon"));
 
-            location = new Location(name, latitude, longitude);
+//            location = new Location(name, latitude, longitude);
 
-            saveLocation(location);
+//            saveLocation(location);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return location;
+//        return location;
 
     }
 
@@ -61,10 +61,6 @@ public class OpenWeatherService {
         );
     }
 
-    private void saveLocation(Location location) {
-        locationDao.save(location);
-    }
-
     private void readJson(HttpURLConnection connection, StringBuilder result) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String line;
@@ -72,5 +68,9 @@ public class OpenWeatherService {
             result.append(line);
         }
         bufferedReader.close();
+    }
+
+    private void saveLocation(Location location) {
+        locationDao.save(location);
     }
 }

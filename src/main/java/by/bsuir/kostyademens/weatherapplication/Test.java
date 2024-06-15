@@ -1,10 +1,12 @@
 package by.bsuir.kostyademens.weatherapplication;
 
+import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
 import by.bsuir.kostyademens.weatherapplication.service.OpenWeatherService;
 
 public class Test {
     public static void main(String[] args) {
-        OpenWeatherService openWeatherService = new OpenWeatherService();
+        LocationDao locationDao = new LocationDao();
+        OpenWeatherService openWeatherService = new OpenWeatherService(locationDao);
 
         openWeatherService.getLocationByName("London");
     }
