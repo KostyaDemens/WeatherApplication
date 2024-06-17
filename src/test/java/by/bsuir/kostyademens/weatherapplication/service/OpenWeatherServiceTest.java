@@ -25,9 +25,9 @@ public class OpenWeatherServiceTest {
     private Location location;
 
     @BeforeEach
-    void prepare() {
-        location = new Location("London", BigDecimal.valueOf(51.5085), BigDecimal.valueOf(-0.1257));
-    }
+//    void prepare() {
+//        location = new Location("London", BigDecimal.valueOf(51.5085), BigDecimal.valueOf(-0.1257));
+//    }
 
     @Test
     void saveLocation_ShouldSaveLocationInDataBase() {

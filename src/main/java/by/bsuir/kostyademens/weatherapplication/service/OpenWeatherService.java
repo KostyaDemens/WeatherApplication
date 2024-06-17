@@ -1,21 +1,20 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
 import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
+import by.bsuir.kostyademens.weatherapplication.dto.LocationReqDto;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
-import by.bsuir.kostyademens.weatherapplication.model.LocationApiResponse;
+import by.bsuir.kostyademens.weatherapplication.dto.LocationRespDto;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Map;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +26,7 @@ public class OpenWeatherService {
 
     private final String WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather";
 
-    public void getLocationByName(String locationName) {
+    public List<LocationReqDto> getLocationsByName(String locationName) {
         try {
             StringBuilder result = new StringBuilder();
             String urlString = WEATHER_API_URL + "?q=" + locationName + "&appid=" + API_KEY + "&units=metric";
@@ -38,13 +37,14 @@ public class OpenWeatherService {
             readJson(connection, result);
 
             Gson gson = new GsonBuilder().create();
-            LocationApiResponse locationApiResponse = gson.fromJson(String.valueOf(result), LocationApiResponse.class);
+            LocationRespDto locationRespDto = gson.fromJson(String.valueOf(result), LocationRespDto.class);
 
+            int t = 2;
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+return null;
     }
 
 

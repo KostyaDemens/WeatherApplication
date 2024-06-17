@@ -8,6 +8,6 @@ public class Test {
         LocationDao locationDao = new LocationDao();
         OpenWeatherService openWeatherService = new OpenWeatherService();
 
-        openWeatherService.getLocationByName("Minsk");
+        openWeatherService.getLocationsByName("Minsk");
     }
 }

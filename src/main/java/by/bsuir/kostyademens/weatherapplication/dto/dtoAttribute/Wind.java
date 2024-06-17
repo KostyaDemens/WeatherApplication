@@ -1,4 +1,4 @@
-package by.bsuir.kostyademens.weatherapplication.model.apiModelAttributes;
+package by.bsuir.kostyademens.weatherapplication.dto.dtoAttribute;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
