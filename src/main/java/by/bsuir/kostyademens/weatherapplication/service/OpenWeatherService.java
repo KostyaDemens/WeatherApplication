@@ -2,6 +2,7 @@ package by.bsuir.kostyademens.weatherapplication.service;
 
 import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
+import by.bsuir.kostyademens.weatherapplication.exception.NoSuchCountryException;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
 import com.google.gson.*;
 import lombok.AllArgsConstructor;
@@ -45,7 +46,9 @@ public class OpenWeatherService {
                 locations.add(new LocationDto(name, country));
             }
 
-            int t = 2;
+            if (locations.isEmpty()) {
+                throw new NoSuchCountryException("Error: The location you are searching for does not exist");
+            }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
