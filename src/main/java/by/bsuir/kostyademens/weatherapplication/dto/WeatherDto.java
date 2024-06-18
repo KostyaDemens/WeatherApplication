@@ -1,17 +1,14 @@
 package by.bsuir.kostyademens.weatherapplication.dto;
 
-import by.bsuir.kostyademens.weatherapplication.dto.dtoAttribute.*;
-import com.google.gson.annotations.SerializedName;
+import by.bsuir.kostyademens.weatherapplication.model.apiLocationAttribute.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Data
-public class LocationRespDto {
-
-    @SerializedName("coord")
+@AllArgsConstructor
+public class WeatherDto {
     private Coordinates coordinates;
     private List<Weather> weather;
     private Main main;
@@ -19,4 +16,5 @@ public class LocationRespDto {
     private Clouds clouds;
     private Sys sys;
     private String name;
+
 }

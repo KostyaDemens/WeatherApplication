@@ -1,4 +1,4 @@
-package by.bsuir.kostyademens.weatherapplication.dto.dtoAttribute;
+package by.bsuir.kostyademens.weatherapplication.model.apiLocationAttribute;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
