@@ -11,10 +11,10 @@ public class Test {
         LocationDao locationDao = new LocationDao();
         OpenWeatherService openWeatherService = new OpenWeatherService();
 
-        openWeatherService.getLocationsByName("Minsk");
+//        openWeatherService.getLocationsByName("Minsk");
 
-//        LocationDto locationDto = new LocationDto("Minsk", "BY", 53.9024716, 27.5618225);
-//
-//        openWeatherService.getWeatherForLocation(locationDto);
+        LocationDto locationDto = new LocationDto("Minsk", "BY", 53.9024716, 27.5618225);
+
+        openWeatherService.getWeatherForLocation(locationDto);
     }
 }

@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,19 +59,18 @@ public class OpenWeatherService {
 
     }
 
-//    public WeatherDto getWeatherForLocation(LocationDto locationDto) throws IOException {
-//        StringBuilder result = new StringBuilder();
-//        String urlString = WEATHER_API_URL + "/data/2.5/weather?lat=" + locationDto.getLat() + "&lon=" + locationDto.getLon() + "&appid=" + API_KEY;
-//        URL url = new URL(urlString);
-//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//        connection.setRequestMethod("GET");
-//
-//        readJson(connection, result);
-//
-//        Gson gson = new GsonBuilder().create();
-//
-//        return gson.fromJson(result.toString(), WeatherDto.class);
-//    }
+    public WeatherDto getWeatherForLocation(LocationDto locationDto) throws IOException {
+        StringBuilder result = new StringBuilder();
+        String urlString = WEATHER_API_URL + "/data/2.5/weather?lat=" + locationDto.getLat() + "&lon=" + locationDto.getLon() + "&appid=" + API_KEY;
+        URL url = new URL(urlString);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        readJson(connection, result);
+
+        Gson gson = new GsonBuilder().create();
+        return gson.fromJson(result.toString(), WeatherDto.class);
+    }
 
 
     private void readJson(HttpURLConnection connection, StringBuilder result) throws IOException {
