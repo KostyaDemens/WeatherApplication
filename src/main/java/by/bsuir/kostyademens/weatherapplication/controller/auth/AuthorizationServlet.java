@@ -37,23 +37,5 @@ public class AuthorizationServlet extends BaseServlet {
             context.setVariable("authError", e.getMessage());
         }
         engine.process("authorization", context, resp.getWriter());
-
-//        UserReqDto userReqDto = userService.findByLogin(email);
-//
-//        if (email != null && password != null) {
-//
-//        if (userReqDto != null && BCrypt.checkpw(password, userReqDto.getPassword())) {
-//            resp.sendRedirect(req.getContextPath() + "/home-page");
-//            return;
-//        } else {
-//            context.setVariable("authError", "Invalid username or password");
-//        }
-//
-//        } else {
-//            Session session = authorizationService.login(ModelMapperUtil.getModelMapper().map(userReqDto, User.class));
-//            resp.addCookie(authorizationService.getNewCookie(session));
-//            resp.sendRedirect(req.getContextPath() + "/home-page");
-//        }
-//        engine.process("authorization", context, resp.getWriter());
     }
 }
