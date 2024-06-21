@@ -26,9 +26,9 @@
 
             <!-- Центральная часть с формой поиска -->
             <div class="col-8 d-flex justify-content-center">
-                <form class="d-flex input-group w-auto" method="get" th:action="@{/home-page}">
-                    <input type="search" class="form-control bg-transparent border border-white text-white rounded" placeholder="Search" aria-label="Search" name="location_name" />
-                    <button class="btn" type="button">
+                <form class="d-flex input-group w-auto" style="margin-left: 70px" method="get" th:action="@{/home-page}">
+                    <input type="search" class="form-control bg-transparent border border-white text-white rounded" placeholder="Search" aria-label="Search" name="location_name" required />
+                    <button class="btn" type="submit">
                         <i class="bi bi-search text-white fs-6"></i>
                     </button>
                 </form>
@@ -40,8 +40,31 @@
     </div>
 </nav>
 
-<div class="mainContainer text-center">
+<div class="container d-flex flex-wrap justify-content-center my-4">
 
+    <div th:each="location:${locations}" class="card m-2 p-3 d-flex justify-content-between" style=" border-radius: 35px;">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex">
+                <h6 class="flex-grow-1" th:text="${location.name}">city</h6>
+                <h6 th:text="${location.country}">country</h6>
+            </div>
+
+            <div class="d-flex flex-column text-center mt-5 mb-4">
+                <h6 class="display-4 mb-0 font-weight-bold"> 13°C </h6>
+                <span class="small" style="color: #868B94">Stormy</span>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <div>
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-weather/ilu1.webp"
+                         width="100px">
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 </body>
 </html>

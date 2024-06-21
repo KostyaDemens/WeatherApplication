@@ -20,8 +20,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,6 +34,7 @@ public class OpenWeatherService {
 
     public List<LocationDto> getLocationsByName(String locationName) {
         List<LocationDto> locations;
+        List<LocationDto> uniqueLocations = new ArrayList<>();
         try {
             StringBuilder result = new StringBuilder();
             String urlString = WEATHER_API_URL + "geo/1.0/direct?q=" + locationName + "&limit=5&appid=" + API_KEY;
@@ -45,7 +46,17 @@ public class OpenWeatherService {
 
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-            locations = objectMapper.readValue(result.toString(), new TypeReference<>() {});
+
+           locations = objectMapper.readValue(result.toString(), new TypeReference<>() {});
+
+            Set<String> countries = new HashSet<>();
+
+            for (LocationDto location : locations) {
+                if (countries.add(location.getCountry())) {
+                    uniqueLocations.add(location);
+                }
+            }
+
 
             if (locations.isEmpty()) {
                 throw new NoSuchCountryException("Error: The location you are searching for does not exist");
@@ -54,7 +65,8 @@ public class OpenWeatherService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return locations;
+
+        return uniqueLocations;
 
 
     }
