@@ -13,8 +13,8 @@ public class Test {
 
 //        openWeatherService.getLocationsByName("Minsk");
 
-        LocationDto locationDto = new LocationDto("Minsk", "BY", 53.9024716, 27.5618225);
+//        LocationDto locationDto = new LocationDto("Minsk", "BY", 53.9024716, 27.5618225);
 
-        openWeatherService.getWeatherForLocation(locationDto);
+//        openWeatherService.getWeatherForLocation(locationDto);
     }
 }

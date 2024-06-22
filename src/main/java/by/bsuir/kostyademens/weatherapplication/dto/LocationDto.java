@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LocationDto {
-
     private String name;
     private String country;
     private Double lat;
     private Double lon;
-//    private Coordinates coordinates;
+    private WeatherDto weatherDto;
 }

@@ -34,7 +34,6 @@ public class OpenWeatherService {
 
     public List<LocationDto> getLocationsByName(String locationName) {
         List<LocationDto> locations;
-        List<LocationDto> uniqueLocations = new ArrayList<>();
         try {
             StringBuilder result = new StringBuilder();
             String urlString = WEATHER_API_URL + "geo/1.0/direct?q=" + locationName + "&limit=5&appid=" + API_KEY;
@@ -51,11 +50,7 @@ public class OpenWeatherService {
 
             Set<String> countries = new HashSet<>();
 
-            for (LocationDto location : locations) {
-                if (countries.add(location.getCountry())) {
-                    uniqueLocations.add(location);
-                }
-            }
+            locations.removeIf(location -> !countries.add(location.getCountry()));
 
 
             if (locations.isEmpty()) {
@@ -66,14 +61,14 @@ public class OpenWeatherService {
             throw new RuntimeException(e);
         }
 
-        return uniqueLocations;
+        return locations;
 
 
     }
 
     public WeatherDto getWeatherForLocation(LocationDto locationDto) throws IOException {
         StringBuilder result = new StringBuilder();
-        String urlString = WEATHER_API_URL + "/data/2.5/weather?lat=" + locationDto.getLat() + "&lon=" + locationDto.getLon() + "&appid=" + API_KEY;
+        String urlString = WEATHER_API_URL + "/data/2.5/weather?lat=" + locationDto.getLat() + "&lon=" + locationDto.getLon() + "&appid=" + API_KEY + "&units=metric";
         URL url = new URL(urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");

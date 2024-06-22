@@ -42,7 +42,7 @@
 
 <div class="container d-flex flex-wrap justify-content-center my-4">
 
-    <div th:each="location:${locations}" class="card m-2 p-3 d-flex justify-content-between" style=" border-radius: 35px;">
+    <div th:each="location:${locations}" class="card m-2 p-3 d-flex flex-column justify-content-between" style="width: 300px; border-radius: 35px;">
 
         <div class="card-body p-4">
 
@@ -52,11 +52,11 @@
             </div>
 
             <div class="d-flex flex-column text-center mt-5 mb-4">
-                <h6 class="display-4 mb-0 font-weight-bold"> 13°C </h6>
-                <span class="small" style="color: #868B94">Stormy</span>
+                <h6 class="display-4 mb-0 font-weight-bold" th:text="${location.weatherDto.main.temperature} + '°C'">temperature</h6>
+                <span class="small" style="color: #868B94" th:text="${location.weatherDto.weather[0].main}">Description</span>
             </div>
 
-            <div class="d-flex align-items-center">
+            <div class="d-flex justify-content-center align-items-center">
                 <div>
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-weather/ilu1.webp"
                          width="100px">
