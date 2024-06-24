@@ -9,16 +9,20 @@ import lombok.Data;
 public class Main {
 
     @SerializedName("temp")
-    private Double temperature;
+    private double temperature;
 
-    @SerializedName("temp_min")
-    private Double minTemperature;
+    @SerializedName("feels_like")
+    private double feelsLike;
 
-    @SerializedName("temp_max")
-    private Double maxTemperature;
-
-    @SerializedName("humidity")
-    private Double humidityPercentage;
+    private Double humidity;
 
     private Double pressure;
+
+    public Long getTemperature() {
+        return (long)temperature;
+    }
+
+    public Long getFeelsLikeTemperature() {
+        return (long)feelsLike;
+    }
 }
