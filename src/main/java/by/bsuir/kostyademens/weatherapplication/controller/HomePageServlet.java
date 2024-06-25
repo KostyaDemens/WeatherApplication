@@ -24,6 +24,7 @@ public class HomePageServlet extends BaseServlet {
             }
 
         context.setVariable("locations", locations);
+
         engine.process("homePage", context, resp.getWriter());
         return;
         }

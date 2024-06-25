@@ -39,3 +39,5 @@ public class AuthorizationServlet extends BaseServlet {
         engine.process("authorization", context, resp.getWriter());
     }
 }
+
+//TODO Скрывать поле пароля
