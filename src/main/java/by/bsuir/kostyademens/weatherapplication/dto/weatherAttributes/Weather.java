@@ -10,4 +10,8 @@ public class Weather {
     private Long id;
     private String description;
     private String main;
+
+    public String getMain() {
+        return main.toUpperCase();
+    }
 }

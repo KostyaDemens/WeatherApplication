@@ -11,14 +11,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-0d6yfPzlD6FhFPejryye7oM9yyP2tFyw7j0T6H1zl0Q5Z1G1n0l0ot/5p1byqB8d"
             crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
 <nav class="navbar navbar-expand navbar-dark bg-dark wrapper">
     <div class="container-fluid">
-        <div class="row w-100">
+
             <!-- Левая часть с кнопкой выхода -->
-            <div class="col-2 d-flex align-items-center">
+            <div class="col-2 d-flex justify-content-start">
                 <button class="btn btn-transparent border border-white text-white rounded" type="button">
                     Logout
                 </button>
@@ -26,7 +27,7 @@
 
             <!-- Центральная часть с формой поиска -->
             <div class="col-8 d-flex justify-content-center">
-                <form class="d-flex input-group w-auto" style="margin-left: 70px" method="get" th:action="@{/home-page}">
+                <form class="d-flex input-group w-auto" style="margin-left: 30px" method="get" th:action="@{/home-page}">
                     <input type="search" class="form-control bg-transparent border border-white text-white rounded" placeholder="Search" aria-label="Search" name="location_name" required />
                     <button class="btn" type="submit">
                         <i class="bi bi-search text-white fs-6"></i>
@@ -35,9 +36,12 @@
             </div>
 
             <!-- Правая часть для приветствия пользователя -->
-            <div class="col-2"></div>
+            <div class="col-2 d-flex justify-content-end">
+                <button class="btn btn-transparent border border-white text-white rounded" type="button">
+                    Home
+                </button>
+            </div>
         </div>
-    </div>
 </nav>
 
 <div class="container d-flex flex-wrap justify-content-center my-4">
@@ -50,7 +54,7 @@
             </div>
         </div>
 
-        <div class="card-body pt-0 main-content" style="padding-top: 0; margin-bottom: 0; height: 265px">
+        <div class="card-body pt-0 main-content" style="padding-top: 0; margin-bottom: 0; height: auto">
             <div class="d-flex flex-column text-center mt-3" style="margin-bottom: 0;">
                 <h6 class="display-4 mb-0 font-weight-bold" th:text="${location.weatherDto.main.temperature} + '°C'">23</h6>
                 <span class="small" style="color: #868B94" th:text="${location.weatherDto.weather[0].description}">Cloudy</span>
@@ -64,11 +68,22 @@
         </div>
 
         <div class="card-bottom d-grid p-1" style="margin-top: 0; margin-bottom: 0; padding: 1px;">
-            <button type="submit" class="btn btn-success w-100 rounded-pill" style="margin-bottom: 0;">
+            <button type="submit" class="btn-plus btn btn-success w-100 rounded-pill" style="margin-bottom: 0;">
                 <i class="fas fa-plus" style="color: white;"></i>
             </button>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('.btn-plus').click(function () {
+            var icon = $(this).find('i');
+            if (icon.hasClass('fa-plus')) {
+                icon.removeClass('fa-plus').addClass('fa-check');
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
