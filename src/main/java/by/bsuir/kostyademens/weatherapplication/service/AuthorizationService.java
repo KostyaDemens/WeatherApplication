@@ -44,4 +44,8 @@ public class AuthorizationService {
         session.setExpiresAt(LocalDateTime.now().plusMinutes(1));
         return session;
     }
+
+    public Session getSession(Long id) {
+        return sessionDao.findById(id);
+    }
 }

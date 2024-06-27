@@ -27,8 +27,10 @@
 
             <!-- Центральная часть с формой поиска -->
             <div class="col-8 d-flex justify-content-center">
-                <form class="d-flex input-group w-auto" style="margin-left: 30px" method="get" th:action="@{/home-page}">
-                    <input type="search" class="form-control bg-transparent border border-white text-white rounded" placeholder="Search" aria-label="Search" name="location_name" required />
+                <form class="d-flex input-group w-auto needs-validation" style="margin-left: 30px" method="get"
+                      th:action="@{/home-page}" novalidate>
+                    <input type="text" class="form-control bg-transparent border border-white text-white rounded"
+                           placeholder="Search" aria-label="Search" name="location_name" required/>
                     <button class="btn" type="submit">
                         <i class="bi bi-search text-white fs-6"></i>
                     </button>
@@ -43,6 +45,7 @@
             </div>
         </div>
 </nav>
+
 
 <div class="container d-flex flex-wrap justify-content-center my-4">
     <div th:each="location:${locations}" class="card m-2 p-3 d-flex flex-column justify-content-between" style="width: 300px; border-radius: 35px; position: relative;">
@@ -67,14 +70,17 @@
             </div>
         </div>
 
-        <div class="card-bottom d-grid p-1" style="margin-top: 0; margin-bottom: 0; padding: 1px;">
-            <button type="submit" class="btn-plus btn btn-success w-100 rounded-pill" style="margin-bottom: 0;">
-                <i class="fas fa-plus" style="color: white;"></i>
-            </button>
-        </div>
+<!--        <form method="post" th:action="@{/home-page}">-->
+            <div class="card-bottom d-grid p-1" style="margin-top: 0; margin-bottom: 0; padding: 1px;">
+                <button type="submit" class="btn-plus btn btn-success w-100 rounded-pill" style="margin-bottom: 0;">
+                    <i class="fas fa-plus" style="color: white;"></i>
+                </button>
+            </div>
+<!--        </form>-->
     </div>
 </div>
 <script>
+
     $(document).ready(function () {
         $('.btn-plus').click(function () {
             var icon = $(this).find('i');
@@ -83,6 +89,21 @@
             }
         });
     });
+
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
 </script>
 
 </body>
