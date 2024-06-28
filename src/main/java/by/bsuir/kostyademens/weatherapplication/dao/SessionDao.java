@@ -5,6 +5,7 @@ import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
 import jakarta.persistence.NoResultException;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public class SessionDao {
 
@@ -22,11 +23,11 @@ public class SessionDao {
         }
     }
 
-    public Session findById(Long id) {
+    public Session findById(String uuid) {
         try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
             session.beginTransaction();
-            Session entity = session.createQuery("SELECT Session s WHERE s.id = :id", Session.class)
-                    .setParameter("id", id)
+            Session entity = session.createQuery("FROM Session s WHERE s.id = :uuid", Session.class)
+                    .setParameter("uuid", uuid)
                     .getSingleResult();
             session.getTransaction().commit();
             return entity;

@@ -1,6 +1,7 @@
 package by.bsuir.kostyademens.weatherapplication.dto;
 
 import by.bsuir.kostyademens.weatherapplication.dto.weatherAttributes.Coordinates;
+import by.bsuir.kostyademens.weatherapplication.model.User;
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
