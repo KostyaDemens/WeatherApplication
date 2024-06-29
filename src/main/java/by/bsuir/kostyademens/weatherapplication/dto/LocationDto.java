@@ -7,14 +7,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class LocationDto {
+    private boolean hasLocation;
     private String name;
     private String country;
-    private Double lat;
-    private Double lon;
+    private BigDecimal lat;
+    private BigDecimal lon;
     private WeatherDto weatherDto;
 }

@@ -1,9 +1,10 @@
 package by.bsuir.kostyademens.weatherapplication.controller;
 
-import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
+import by.bsuir.kostyademens.weatherapplication.mapper.LocationMapper;
 import by.bsuir.kostyademens.weatherapplication.service.AuthorizationService;
 import by.bsuir.kostyademens.weatherapplication.service.OpenWeatherService;
 import by.bsuir.kostyademens.weatherapplication.service.RegistrationService;
+import by.bsuir.kostyademens.weatherapplication.service.UserService;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 
@@ -22,6 +23,8 @@ public class BaseServlet extends HttpServlet {
     protected AuthorizationService authService = new AuthorizationService();
     protected RegistrationService registerService = new RegistrationService();
     protected OpenWeatherService weatherService = new OpenWeatherService();
+    protected LocationMapper locationMapper = new LocationMapper();
+    protected UserService userService = new UserService();
     protected TemplateEngine engine;
 
     protected WebContext context;

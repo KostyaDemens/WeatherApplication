@@ -22,9 +22,14 @@ public class HomePageServlet extends BaseServlet {
 
         String locationName = req.getParameter("location_name");
 
+        User user = getUserFromSession(req);
+        Location modelLocation;
         if (locationName != null) {
         List<LocationDto> locations = weatherService.getLocationsByName(locationName);
             for (LocationDto location : locations) {
+                modelLocation = locationMapper.convertToModel(location);
+                boolean hasLocation = userService.isUserHasLocation(user, modelLocation);
+                location.setHasLocation(hasLocation);
                 location.setWeatherDto(weatherService.getWeatherForLocation(location));
             }
 
@@ -39,16 +44,7 @@ public class HomePageServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        Cookie[] cookies = req.getCookies();
-        Cookie cookie = Arrays.stream(cookies).filter(n -> n.getName().equals("session_id")).findFirst().orElse(null);
-
-
-        assert cookie != null;
-        Session session = authService.getSession(cookie.getValue());
-
-
-        User user = session.getUser();
+        User user = getUserFromSession(req);
 
         String name = req.getParameter("name");
         BigDecimal latitude = new BigDecimal(req.getParameter("latitude"));
@@ -61,5 +57,13 @@ public class HomePageServlet extends BaseServlet {
 
         resp.sendRedirect("/home-page?location_name=" + name);
 
+    }
+
+    private User getUserFromSession(HttpServletRequest req) {
+        Cookie[] cookies = req.getCookies();
+        Cookie cookie = Arrays.stream(cookies).filter(n -> n.getName().equals("session_id")).findFirst().orElse(null);
+        assert cookie != null;
+        Session session = authService.getSession(cookie.getValue());
+        return session.getUser();
     }
 }
