@@ -16,6 +16,5 @@
         <mapping class="by.bsuir.kostyademens.weatherapplication.model.Location"/>
         <mapping class="by.bsuir.kostyademens.weatherapplication.model.Session"/>
         <mapping class="by.bsuir.kostyademens.weatherapplication.model.User"/>
-
     </session-factory>
 </hibernate-configuration>

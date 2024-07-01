@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <form method="post" th:action="@{/home-page}" class="location-form">
+        <form method="post" th:action="@{/home-page}" th:if="${!location.hasLocation}" class="location-form">
             <input name="longitude" th:value="${location.lon}" type="hidden">
             <input name="latitude" th:value="${location.lat}" type="hidden">
             <input name="name" th:value="${location.name}" type="hidden">
@@ -80,18 +80,29 @@
                 </button>
             </div>
         </form>
+
+        <form method="post" th:action="@{/home-page}" th:if="${location.hasLocation}" class="location-form">
+            <input name="longitude" th:value="${location.lon}" type="hidden">
+            <input name="latitude" th:value="${location.lat}" type="hidden">
+            <input name="name" th:value="${location.name}" type="hidden">
+            <div class="card-bottom d-grid p-1" style="margin-top: 0; margin-bottom: 0; padding: 1px;">
+                <button type="submit" class="btn-plus btn btn-success w-100 rounded-pill" style="margin-bottom: 0;">
+                    <i class="fas fa-check" style="color: white;"></i>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 <script>
 
-    $(document).ready(function () {
-        $('.btn-plus').click(function () {
-            var icon = $(this).find('i');
-            if (icon.hasClass('fa-plus')) {
-                icon.removeClass('fa-plus').addClass('fa-check');
-            }
-        });
-    });
+    // $(document).ready(function () {
+    //     $('.btn-plus').click(function () {
+    //         var icon = $(this).find('i');
+    //         if (icon.hasClass('fa-plus')) {
+    //             icon.removeClass('fa-plus').addClass('fa-check');
+    //         }
+    //     });
+    // });
 
     (function () {
         'use strict'

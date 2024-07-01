@@ -5,6 +5,7 @@ import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
 import jakarta.persistence.NoResultException;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -40,6 +41,17 @@ public class LocationDao {
         }
     }
 
+    public Location findById(Long id) {
+        try (Session session = sessionFactoryUtil.getSession()) {
+            session.beginTransaction();
+            Location location = session.createQuery("FROM Location l WHERE l.id = :id", Location.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+            session.getTransaction().commit();
+            return location;
+        }
+    }
+
     public List<Location> findUserLocations(User user) {
         try (Session session = sessionFactoryUtil.getSession()) {
             session.beginTransaction();
@@ -48,6 +60,29 @@ public class LocationDao {
                     .getResultList();
             session.getTransaction().commit();
             return location;
+        }
+    }
+
+    public void deleteById(Long id) {
+        try (Session session = sessionFactoryUtil.getSession()) {
+            session.beginTransaction();
+            Location location = session.get(Location.class, id);
+            session.remove(location);
+            session.getTransaction().commit();
+        }
+    }
+
+    public Optional<Location> findByCoordinates(BigDecimal longitude, BigDecimal latitude) {
+        try (Session session = sessionFactoryUtil.getSession()) {
+            session.beginTransaction();
+            Location location = session.createQuery("FROM Location l WHERE l.longitude = :longitude AND l.latitude = :latitude", Location.class)
+                    .setParameter("longitude", longitude)
+                    .setParameter("latitude", latitude)
+                    .getSingleResult();
+            session.getTransaction().commit();
+            return Optional.of(location);
+        } catch (NoResultException e) {
+            return Optional.empty();
         }
     }
 }

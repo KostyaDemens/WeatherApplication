@@ -12,7 +12,7 @@ public class SessionFactoryUtil {
 
     private final SessionFactory sessionFactory;
 
-    private SessionFactoryUtil(){
+    private SessionFactoryUtil() {
         sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
     }
 

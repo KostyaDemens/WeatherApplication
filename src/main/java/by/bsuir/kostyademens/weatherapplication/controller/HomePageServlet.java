@@ -34,8 +34,6 @@ public class HomePageServlet extends BaseServlet {
             }
 
         context.setVariable("locations", locations);
-
-
         engine.process("homePage", context, resp.getWriter());
         return;
         }
@@ -50,13 +48,16 @@ public class HomePageServlet extends BaseServlet {
         BigDecimal latitude = new BigDecimal(req.getParameter("latitude"));
         BigDecimal longitude = new BigDecimal(req.getParameter("longitude"));
 
-
-
         Location location = new Location(name, user, latitude, longitude);
-        weatherService.saveLocation(location);
+
+        if (userService.isUserHasLocation(user, location)) {
+            location = locationService.findLocationByCoordinates(longitude, latitude);
+            userService.deleteUserLocation(location.getId());
+        } else {
+            weatherService.saveLocation(location);
+        }
 
         resp.sendRedirect("/home-page?location_name=" + name);
-
     }
 
     private User getUserFromSession(HttpServletRequest req) {
