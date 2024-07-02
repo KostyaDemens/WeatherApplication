@@ -26,4 +26,8 @@ public class LocationMapper {
     public Location convertToModel(LocationDto locationDto) {
         return modelMapper.map(locationDto, Location.class);
     }
+
+    public LocationDto convertToDto(Location location) {
+        return modelMapper.map(location, LocationDto.class);
+    }
 }

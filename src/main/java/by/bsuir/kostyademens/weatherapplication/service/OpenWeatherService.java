@@ -66,6 +66,8 @@ public class OpenWeatherService {
 
     }
 
+
+
     public WeatherDto getWeatherForLocation(LocationDto locationDto) throws IOException {
         StringBuilder result = new StringBuilder();
         String urlString = WEATHER_API_URL + "/data/2.5/weather?lat=" + locationDto.getLat() + "&lon=" + locationDto.getLon() + "&appid=" + API_KEY + "&units=metric";
