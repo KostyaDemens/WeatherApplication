@@ -27,8 +27,5 @@ public class UserService {
         return false;
     }
 
-    public void deleteUserLocation(Long id) {
 
-        locationDao.deleteById(id);
-    }
 }

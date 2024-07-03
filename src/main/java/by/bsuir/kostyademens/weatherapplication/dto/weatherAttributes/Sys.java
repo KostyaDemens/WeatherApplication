@@ -6,7 +6,5 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Sys {
-
-    private Double sunrise;
-    private Double sunset;
+    private String country;
 }

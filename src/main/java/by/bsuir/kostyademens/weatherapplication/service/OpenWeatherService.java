@@ -66,7 +66,24 @@ public class OpenWeatherService {
 
     }
 
+    public WeatherDto getWeatherForecast(BigDecimal latitude, BigDecimal longitude) {
+        try {
+            StringBuilder result = new StringBuilder();
+            String urlString = WEATHER_API_URL + "data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + API_KEY + "&units=metric";
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
 
+            readJson(connection, result);
+
+            Gson gson = new GsonBuilder().create();
+            return gson.fromJson(result.toString(), WeatherDto.class);
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public WeatherDto getWeatherForLocation(LocationDto locationDto) throws IOException {
         StringBuilder result = new StringBuilder();
@@ -91,7 +108,5 @@ public class OpenWeatherService {
         bufferedReader.close();
     }
 
-    public void saveLocation(Location location) {
-        locationDao.save(location);
-    }
+
 }
