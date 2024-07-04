@@ -1,10 +1,13 @@
 package by.bsuir.kostyademens.weatherapplication.controller;
 
 import by.bsuir.kostyademens.weatherapplication.mapper.LocationMapper;
+import by.bsuir.kostyademens.weatherapplication.model.Session;
+import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.service.*;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,6 +17,7 @@ import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class BaseServlet extends HttpServlet {
 
@@ -27,6 +31,14 @@ public class BaseServlet extends HttpServlet {
 
     protected WebContext context;
     protected IWebExchange webExchange;
+
+    protected User getUserFromSession(HttpServletRequest req) {
+        Cookie[] cookies = req.getCookies();
+        Cookie cookie = Arrays.stream(cookies).filter(n -> n.getName().equals("session_id")).findFirst().orElse(null);
+        assert cookie != null;
+        Session session = authService.getSession(cookie.getValue());
+        return session.getUser();
+    }
 
     @Override
     public void init(ServletConfig config) throws ServletException {

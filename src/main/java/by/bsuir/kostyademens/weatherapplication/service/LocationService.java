@@ -19,6 +19,8 @@ public class LocationService {
     private final LocationDao locationDao = new LocationDao();
     private final OpenWeatherService weatherService = new OpenWeatherService();
 
+    private final UserService userService = new UserService();
+
 
     public Location findLocationByCoordinates(BigDecimal longitude, BigDecimal latitude) {
         return locationDao.findByCoordinates(longitude, latitude)
@@ -30,16 +32,30 @@ public class LocationService {
         List<Location> locations = locationDao.findUserLocations(user);
         for (Location location : locations) {
             WeatherDto weatherForecast = weatherService.getWeatherForecast(location.getLatitude(), location.getLongitude());
+            weatherForecast.setHasLocation(true);
+            weatherForecast.setName(location.getName());
             weatherForecasts.add(weatherForecast);
         }
             return weatherForecasts;
+    }
+
+    public List<WeatherDto> getForecasts(String locationName) {
+        List<LocationDto> locations = weatherService.getLocationsByName(locationName);
+        List<WeatherDto> forecasts = new ArrayList<>();
+        for (LocationDto location : locations) {
+            WeatherDto weatherDto = weatherService.getWeatherForecast(location.getLat(), location.getLon());
+            weatherDto.setName(location.getName());
+            weatherDto.getSys().setCountry(location.getCountry());
+            forecasts.add(weatherDto);
+        }
+        return forecasts;
     }
 
     public void saveLocation(Location location) {
         locationDao.save(location);
     }
 
-    public void deleteLocation(BigDecimal longitude, BigDecimal latitude) {
-        locationDao.deleteByCoordinates(longitude, latitude);
+    public void deleteLocation(BigDecimal longitude, BigDecimal latitude, User user) {
+        locationDao.deleteByCoordinates(longitude, latitude, user);
     }
 }

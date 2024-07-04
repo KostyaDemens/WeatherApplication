@@ -25,7 +25,7 @@ public class Test {
 //        Optional<Location> location = locationDao.findByCoordinates(BigDecimal.valueOf(37.6172), BigDecimal.valueOf(55.7558));
 String longitude = "37.6172";
 String latitude = "55.7558";
-        locationDao.deleteByCoordinates(new BigDecimal(longitude), new BigDecimal(latitude));
+//        locationDao.deleteByCoordinates(new BigDecimal(longitude), new BigDecimal(latitude));
 
         int i = 2;
 

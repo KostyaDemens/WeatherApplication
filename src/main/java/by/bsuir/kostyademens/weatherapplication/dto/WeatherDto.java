@@ -18,5 +18,6 @@ public class WeatherDto {
     private Clouds clouds;
     private Sys sys;
     private String name;
+    private boolean hasLocation;
 
 }

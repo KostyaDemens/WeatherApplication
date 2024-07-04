@@ -20,15 +20,17 @@
 
             <!-- Левая часть с кнопкой выхода -->
             <div class="col-2 d-flex justify-content-start">
-                <button class="btn btn-transparent border border-white text-white rounded" type="button">
+                <form th:action="@{/logout}" method="get">
+                <button class="btn btn-transparent border border-white text-white rounded" type="submit">
                     Logout
                 </button>
+                </form>
             </div>
 
             <!-- Центральная часть с формой поиска -->
             <div class="col-8 d-flex justify-content-center">
                 <form class="d-flex input-group w-auto needs-validation" style="margin-left: 30px" method="get"
-                      th:action="@{/home-page}" novalidate>
+                      th:action="@{/search}" novalidate>
                     <input type="text" class="form-control bg-transparent border border-white text-white rounded"
                            placeholder="Search" aria-label="Search" name="location_name" required/>
                     <button class="btn" type="submit">
@@ -39,9 +41,11 @@
 
             <!-- Правая часть для приветствия пользователя -->
             <div class="col-2 d-flex justify-content-end">
-                <button class="btn btn-transparent border border-white text-white rounded" type="button">
+                <form th:action="@{/home-page}" method="get">
+                    <button class="btn btn-transparent border border-white text-white rounded" type="submit">
                     Home
                 </button>
+                </form>
             </div>
         </div>
 </nav>
@@ -72,7 +76,8 @@
             </div>
         </div>
 
-        <div class="card-bottom d-grid p-1" style="margin-top: 0; margin-bottom: 0; padding: 1px;">
+        <div th:if="${forecast.hasLocation}" class="card-bottom d-grid p-1"
+             style="margin-top: 0; margin-bottom: 0; padding: 1px;">
             <form method="post" action="/home-page">
                 <input type="hidden" name="longitude" th:value="${forecast.coord.longitude}">
                 <input type="hidden" name="latitude" th:value="${forecast.coord.latitude}">
@@ -82,33 +87,24 @@
             </form>
         </div>
 
-        <!--        <form method="post" th:action="@{/home-page}" th:if="${!location.hasLocation}" class="location-form">-->
-        <!--            <input name="longitude" th:value="${location.lon}" type="hidden">-->
-        <!--            <input name="latitude" th:value="${location.lat}" type="hidden">-->
-        <!--            <input name="name" th:value="${location.name}" type="hidden">-->
-        <!--            <div class="card-bottom d-grid p-1" style="margin-top: 0; margin-bottom: 0; padding: 1px;">-->
-        <!--                <button type="submit" class="btn-plus btn btn-success w-100 rounded-pill" style="margin-bottom: 0;">-->
-        <!--                    <i class="fas fa-plus" style="color: white;"></i>-->
-        <!--                </button>-->
-        <!--            </div>-->
-        <!--        </form>-->
+        <div th:unless="${forecast.hasLocation}" class="card-bottom d-grid p-1"
+             style="margin-top: 0; margin-bottom: 0; padding: 1px;">
+            <form method="post" action="/search">
+                <input type="hidden" name="longitude" th:value="${forecast.coord.longitude}">
+                <input type="hidden" name="latitude" th:value="${forecast.coord.latitude}">
+                <input type="hidden" name="name" th:value="${forecast.name}">
+                <button type="submit" class="btn-plus btn btn-success w-100 rounded-pill" style="margin-bottom: 0;">
+                    <i class="fas fa-check" style="color: white;"></i>
+                </button>
+            </form>
+        </div>
 
-        <!--        <form method="post" th:action="@{/home-page}" th:if="${location.hasLocation}" class="location-form">-->
-        <!--            <input name="longitude" th:value="${location.lon}" type="hidden">-->
-        <!--            <input name="latitude" th:value="${location.lat}" type="hidden">-->
-        <!--            <input name="name" th:value="${location.name}" type="hidden">-->
-        <!--            <div class="card-bottom d-grid p-1" style="margin-top: 0; margin-bottom: 0; padding: 1px;">-->
-        <!--                <button type="submit" class="btn-plus btn btn-success w-100 rounded-pill" style="margin-bottom: 0;">-->
-        <!--                    <i class="fas fa-check" style="color: white;"></i>-->
-        <!--                </button>-->
-        <!--            </div>-->
-        <!--        </form>-->
     </div>
-    <div class="col-lg-12 text-center centered-content" th:unless="${forecasts}">
+</div>
+<div class="col-lg-12 text-center centered-content" style="margin-top: 270px" th:unless="${forecasts}">
         <p class="lead">Your personalized weather forecasts</p>
         <p>You don't have any locations added for weather tracking yet. Try searching and adding new locations to stay updated with the latest forecasts.</p>
     </div>
-</div>
 <script>
 
     (function () {

@@ -33,7 +33,15 @@ public class SessionDao {
             return entity;
         } catch (NoResultException e) {
             return null;
-            //TODO change logic
+        }
+    }
+
+    public void delete(Session entity) {
+        try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
+            session.beginTransaction();
+            session.remove(entity);
+            session.flush();
+            session.getTransaction().commit();
         }
     }
 }

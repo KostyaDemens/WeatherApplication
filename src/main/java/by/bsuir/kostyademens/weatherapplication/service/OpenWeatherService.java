@@ -85,19 +85,6 @@ public class OpenWeatherService {
         }
     }
 
-    public WeatherDto getWeatherForLocation(LocationDto locationDto) throws IOException {
-        StringBuilder result = new StringBuilder();
-        String urlString = WEATHER_API_URL + "/data/2.5/weather?lat=" + locationDto.getLat() + "&lon=" + locationDto.getLon() + "&appid=" + API_KEY + "&units=metric";
-        URL url = new URL(urlString);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-
-        readJson(connection, result);
-
-        Gson gson = new GsonBuilder().create();
-        return gson.fromJson(result.toString(), WeatherDto.class);
-    }
-
 
     private void readJson(HttpURLConnection connection, StringBuilder result) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));

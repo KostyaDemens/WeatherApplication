@@ -63,12 +63,13 @@ public class LocationDao {
         }
     }
 
-    public void deleteByCoordinates(BigDecimal longitude, BigDecimal latitude) {
+    public void deleteByCoordinates(BigDecimal longitude, BigDecimal latitude, User user) {
         try (Session session = sessionFactoryUtil.getSession()) {
             session.beginTransaction();
-            Location location = session.createQuery("FROM Location l WHERE l.longitude = :longitude AND l.latitude = :latitude", Location.class)
+            Location location = session.createQuery("FROM Location l WHERE l.longitude = :longitude AND l.latitude = :latitude AND l.user = :user", Location.class)
                             .setParameter("longitude", longitude)
                                     .setParameter("latitude", latitude)
+                    .setParameter("user", user)
                                             .getSingleResult();
             session.remove(location);
             session.getTransaction().commit();
