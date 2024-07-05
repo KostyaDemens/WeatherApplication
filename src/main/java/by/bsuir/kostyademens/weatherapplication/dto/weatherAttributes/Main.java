@@ -11,18 +11,7 @@ public class Main {
     @SerializedName("temp")
     private double temperature;
 
-    @SerializedName("feels_like")
-    private double feelsLike;
-
-    private Double humidity;
-
-    private Double pressure;
-
     public Long getTemperature() {
         return (long)temperature;
-    }
-
-    public Long getFeelsLikeTemperature() {
-        return (long)feelsLike;
     }
 }

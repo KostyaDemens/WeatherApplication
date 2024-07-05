@@ -17,8 +17,8 @@ import java.util.List;
 @WebServlet("/home-page")
 public class HomePageServlet extends BaseServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = getUserFromSession(req);
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        User user = (User)req.getAttribute("user");
         List<WeatherDto> weatherForecasts = locationService.getUserForecasts(user);
         if (!weatherForecasts.isEmpty()) {
         context.setVariable("forecasts", weatherForecasts);
@@ -27,10 +27,10 @@ public class HomePageServlet extends BaseServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String longitude = req.getParameter("longitude");
         String latitude = req.getParameter("latitude");
-        User user = getUserFromSession(req);
+        User user = (User)req.getAttribute("user");
 
 
         locationService.deleteLocation(new BigDecimal(longitude), new BigDecimal(latitude), user);

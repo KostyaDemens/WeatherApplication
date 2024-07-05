@@ -15,9 +15,9 @@ import java.util.List;
 @WebServlet("/search")
 public class SearchServlet extends BaseServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String locationName = req.getParameter("location_name");
-        User user = getUserFromSession(req);
+        User user = (User)req.getAttribute("user");
 
         List<WeatherDto> forecasts = locationService.getForecasts(locationName);
 
@@ -32,8 +32,8 @@ public class SearchServlet extends BaseServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = getUserFromSession(req);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        User user = (User)req.getAttribute("user");
 
         String name = req.getParameter("name");
         BigDecimal latitude = new BigDecimal(req.getParameter("latitude"));

@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class OpenWeatherService {
 
-    private LocationDao locationDao = new LocationDao();
     private final String API_KEY = "3725ced7f88e411534bfa17a8f93d01a";
     private final String WEATHER_API_URL = "https://api.openweathermap.org/";
     private final ObjectMapper objectMapper = new ObjectMapper();

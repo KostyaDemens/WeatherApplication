@@ -14,8 +14,6 @@ public class WeatherDto {
     private List<Weather> weather;
     private Coordinates coord;
     private Main main;
-    private Wind wind;
-    private Clouds clouds;
     private Sys sys;
     private String name;
     private boolean hasLocation;

@@ -3,7 +3,7 @@ package by.bsuir.kostyademens.weatherapplication.service;
 import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.dto.WeatherDto;
-import by.bsuir.kostyademens.weatherapplication.mapper.LocationMapper;
+
 import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 
@@ -18,14 +18,6 @@ public class LocationService {
 
     private final LocationDao locationDao = new LocationDao();
     private final OpenWeatherService weatherService = new OpenWeatherService();
-
-    private final UserService userService = new UserService();
-
-
-    public Location findLocationByCoordinates(BigDecimal longitude, BigDecimal latitude) {
-        return locationDao.findByCoordinates(longitude, latitude)
-                .orElseThrow(() -> new NoSuchElementException("Location not found for the given coordinates"));
-    }
 
     public List<WeatherDto> getUserForecasts(User user) {
         List<WeatherDto> weatherForecasts = new ArrayList<>();

@@ -28,30 +28,6 @@ public class LocationDao {
         }
     }
 
-    public Optional<Location> findByName(String name) {
-        try (Session session = sessionFactoryUtil.getSession()) {
-            session.beginTransaction();
-            Location location = session.createQuery("FROM Location l WHERE l.name = :name", Location.class)
-                    .setParameter("name", name)
-                    .getSingleResult();
-            session.getTransaction().commit();
-            return Optional.of(location);
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
-    }
-
-    public Location findById(Long id) {
-        try (Session session = sessionFactoryUtil.getSession()) {
-            session.beginTransaction();
-            Location location = session.createQuery("FROM Location l WHERE l.id = :id", Location.class)
-                    .setParameter("id", id)
-                    .getSingleResult();
-            session.getTransaction().commit();
-            return location;
-        }
-    }
-
     public List<Location> findUserLocations(User user) {
         try (Session session = sessionFactoryUtil.getSession()) {
             session.beginTransaction();

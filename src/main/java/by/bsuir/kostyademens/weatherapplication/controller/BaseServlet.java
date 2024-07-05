@@ -1,8 +1,6 @@
 package by.bsuir.kostyademens.weatherapplication.controller;
 
-import by.bsuir.kostyademens.weatherapplication.mapper.LocationMapper;
-import by.bsuir.kostyademens.weatherapplication.model.Session;
-import by.bsuir.kostyademens.weatherapplication.model.User;
+
 import by.bsuir.kostyademens.weatherapplication.service.*;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -21,24 +19,15 @@ import java.util.Arrays;
 
 public class BaseServlet extends HttpServlet {
 
-    protected AuthorizationService authService = new AuthorizationService();
-    protected RegistrationService registerService = new RegistrationService();
-    protected OpenWeatherService weatherService = new OpenWeatherService();
-    protected LocationMapper locationMapper = new LocationMapper();
-    protected UserService userService = new UserService();
-    protected LocationService locationService = new LocationService();
+    protected final AuthorizationService authService = new AuthorizationService();
+    protected final RegistrationService registerService = new RegistrationService();
+
+    protected final UserService userService = new UserService();
+    protected final LocationService locationService = new LocationService();
     protected TemplateEngine engine;
 
     protected WebContext context;
     protected IWebExchange webExchange;
-
-    protected User getUserFromSession(HttpServletRequest req) {
-        Cookie[] cookies = req.getCookies();
-        Cookie cookie = Arrays.stream(cookies).filter(n -> n.getName().equals("session_id")).findFirst().orElse(null);
-        assert cookie != null;
-        Session session = authService.getSession(cookie.getValue());
-        return session.getUser();
-    }
 
     @Override
     public void init(ServletConfig config) throws ServletException {
