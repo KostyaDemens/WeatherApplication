@@ -1,12 +1,10 @@
 package by.bsuir.kostyademens.weatherapplication.dao;
 
-import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
 import jakarta.persistence.NoResultException;
 import org.hibernate.Session;
 
-import java.util.List;
 import java.util.Optional;
 
 public class UserDao {

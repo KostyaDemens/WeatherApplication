@@ -3,8 +3,6 @@ package by.bsuir.kostyademens.weatherapplication.service;
 import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
 import by.bsuir.kostyademens.weatherapplication.exception.UserAlreadyExistsException;
 import by.bsuir.kostyademens.weatherapplication.model.User;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Optional;

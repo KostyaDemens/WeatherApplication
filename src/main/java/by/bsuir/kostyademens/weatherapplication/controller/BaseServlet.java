@@ -5,7 +5,6 @@ import by.bsuir.kostyademens.weatherapplication.service.*;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,7 +14,6 @@ import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 public class BaseServlet extends HttpServlet {
 

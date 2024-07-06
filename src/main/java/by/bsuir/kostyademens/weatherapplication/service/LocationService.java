@@ -7,12 +7,9 @@ import by.bsuir.kostyademens.weatherapplication.dto.WeatherDto;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 public class LocationService {
 
@@ -24,6 +21,8 @@ public class LocationService {
         List<Location> locations = locationDao.findUserLocations(user);
         for (Location location : locations) {
             WeatherDto weatherForecast = weatherService.getWeatherForecast(location.getLatitude(), location.getLongitude());
+            weatherForecast.getCoord().setLatitude(location.getLatitude());
+            weatherForecast.getCoord().setLongitude(location.getLongitude());
             weatherForecast.setHasLocation(true);
             weatherForecast.setName(location.getName());
             weatherForecasts.add(weatherForecast);

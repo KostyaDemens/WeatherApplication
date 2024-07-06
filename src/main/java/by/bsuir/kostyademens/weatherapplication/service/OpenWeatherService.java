@@ -1,15 +1,12 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
-import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.dto.WeatherDto;
 import by.bsuir.kostyademens.weatherapplication.exception.NoSuchCountryException;
-import by.bsuir.kostyademens.weatherapplication.model.Location;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.*;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.io.BufferedReader;
@@ -17,14 +14,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
-@AllArgsConstructor
 public class OpenWeatherService {
 
     private final String API_KEY = "3725ced7f88e411534bfa17a8f93d01a";

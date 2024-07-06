@@ -3,7 +3,6 @@ package by.bsuir.kostyademens.weatherapplication.controller;
 import by.bsuir.kostyademens.weatherapplication.dto.WeatherDto;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +21,7 @@ public class SearchServlet extends BaseServlet {
         List<WeatherDto> forecasts = locationService.getForecasts(locationName);
 
         for (WeatherDto weatherDto : forecasts) {
-            boolean hasLocation = userService.isUserHasLocation(user, weatherDto);
+            boolean hasLocation = userService.isUserHasForecast(user, weatherDto);
             weatherDto.setHasLocation(hasLocation);
             context.setVariable("hasLocation", hasLocation);
         }
@@ -33,6 +32,7 @@ public class SearchServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String location_name = req.getParameter("location_name");
         User user = (User)req.getAttribute("user");
 
         String name = req.getParameter("name");
@@ -45,6 +45,6 @@ public class SearchServlet extends BaseServlet {
         locationService.saveLocation(location);
 
 
-        resp.sendRedirect("/home-page");
+        resp.sendRedirect(req.getContextPath() + "/search?location_name=" + location_name);
     }
 }

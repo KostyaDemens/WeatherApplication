@@ -4,9 +4,6 @@ import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
 import jakarta.persistence.NoResultException;
 
-import java.util.Optional;
-import java.util.UUID;
-
 public class SessionDao {
 
     private final SessionFactoryUtil sessionFactoryUtil;

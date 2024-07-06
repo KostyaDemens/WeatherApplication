@@ -23,12 +23,15 @@ public class UserSessionFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         Cookie[] cookies = httpRequest.getCookies();
-        Cookie cookie = Arrays.stream(cookies).filter(n -> n.getName().equals("session_id")).findFirst().orElse(null);
 
+        if (cookies != null) {
+
+        Cookie cookie = Arrays.stream(cookies).filter(n -> n.getName().equals("session_id")).findFirst().orElse(null);
         if (cookie != null) {
             Session session = authService.getSession(cookie.getValue());
             if (session != null) {
                 servletRequest.setAttribute("user", session.getUser());
+                }
             }
         }
 

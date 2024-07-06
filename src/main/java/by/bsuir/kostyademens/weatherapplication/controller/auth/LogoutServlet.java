@@ -3,14 +3,12 @@ package by.bsuir.kostyademens.weatherapplication.controller.auth;
 import by.bsuir.kostyademens.weatherapplication.controller.BaseServlet;
 import by.bsuir.kostyademens.weatherapplication.dao.SessionDao;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @WebServlet("/logout")

@@ -3,14 +3,10 @@ package by.bsuir.kostyademens.weatherapplication.dao;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
-import jakarta.persistence.NoResultException;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public class LocationDao {
 
@@ -49,20 +45,6 @@ public class LocationDao {
                                             .getSingleResult();
             session.remove(location);
             session.getTransaction().commit();
-        }
-    }
-
-    public Optional<Location> findByCoordinates(BigDecimal longitude, BigDecimal latitude) {
-        try (Session session = sessionFactoryUtil.getSession()) {
-            session.beginTransaction();
-            Location location = session.createQuery("FROM Location l WHERE l.longitude = :longitude AND l.latitude = :latitude", Location.class)
-                    .setParameter("longitude", longitude)
-                    .setParameter("latitude", latitude)
-                    .getSingleResult();
-            session.getTransaction().commit();
-            return Optional.of(location);
-        } catch (NoResultException e) {
-            return Optional.empty();
         }
     }
 }

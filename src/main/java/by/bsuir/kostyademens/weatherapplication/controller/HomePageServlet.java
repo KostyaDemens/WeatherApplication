@@ -1,17 +1,13 @@
 package by.bsuir.kostyademens.weatherapplication.controller;
 
 import by.bsuir.kostyademens.weatherapplication.dto.WeatherDto;
-import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.model.User;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 @WebServlet("/home-page")
