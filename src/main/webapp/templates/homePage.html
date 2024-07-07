@@ -59,17 +59,17 @@
         <div class="card-top p-4 mb-0" style="padding: 4px; margin-bottom: 0; height: 45px">
             <div class="d-flex">
                 <h6 class="flex-grow-1" th:text="${forecast.name}">paris</h6>
-                <h6 th:text="${forecast.sys.country}">FR</h6>
+                <h6 th:text="${forecast.weather.country}">FR</h6>
             </div>
         </div>
 
         <div class="card-body pt-0 main-content" style="padding-top: 0; margin-bottom: 0; height: auto">
             <div class="d-flex flex-column text-center mt-3" style="margin-bottom: 0;">
-                <h6 class="display-4 mb-0 font-weight-bold" th:text="${forecast.main.temperature} + '°C'">23</h6>
-                <span class="small" style="color: #868B94" th:text="${forecast.weather[0].description}">Cloudy</span>
+                <h6 class="display-4 mb-0 font-weight-bold" th:text="${forecast.weather.temperature} + '°C'">23</h6>
+                <span class="small" style="color: #868B94" th:text="${forecast.weather.description}">Cloudy</span>
             </div>
             <div class="d-flex justify-content-center align-items-center">
-                <img th:src="@{'/img/' + ${forecast.weather[0].main} + '.svg'}"
+                <img th:src="@{'/img/' + ${forecast.weather.iconName} + '.svg'}"
                      alt="weather-image"
                      style="width: 100%; height: auto;"
                 >
@@ -79,19 +79,19 @@
         <div th:if="${forecast.hasLocation}" class="card-bottom d-grid p-1"
              style="margin-top: 0; margin-bottom: 0; padding: 1px;">
             <form method="post" action="/home-page">
-                <input type="hidden" name="longitude" th:value="${forecast.coord.longitude}">
-                <input type="hidden" name="latitude" th:value="${forecast.coord.latitude}">
+                <input type="hidden" name="longitude" th:value="${forecast.longitude}">
+                <input type="hidden" name="latitude" th:value="${forecast.latitude}">
                 <button type="submit" class="btn-plus btn btn-danger w-100 rounded-pill" style="margin-bottom: 0;">
                     <i class="fas fa-times" style="color: white;"></i>
                 </button>
             </form>
         </div>
 
-        <div th:unless="${forecast.hasLocation}" class="card-bottom d-grid p-1"
+        <div th:if="${!forecast.hasLocation}" class="card-bottom d-grid p-1"
              style="margin-top: 0; margin-bottom: 0; padding: 1px;">
             <form method="post" action="/search">
-                <input type="hidden" name="longitude" th:value="${forecast.coord.longitude}">
-                <input type="hidden" name="latitude" th:value="${forecast.coord.latitude}">
+                <input type="hidden" name="longitude" th:value="${forecast.longitude}">
+                <input type="hidden" name="latitude" th:value="${forecast.latitude}">
                 <input type="hidden" name="name" th:value="${forecast.name}">
                 <button type="submit" class="btn-plus btn btn-success w-100 rounded-pill" style="margin-bottom: 0;">
                     <i class="fas fa-check" style="color: white;"></i>

@@ -1,12 +1,14 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
+import by.bsuir.kostyademens.weatherapplication.api.WeatherApiResponse;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.dto.WeatherDto;
 import by.bsuir.kostyademens.weatherapplication.exception.NoSuchCountryException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.NoArgsConstructor;
 
 import java.io.BufferedReader;
@@ -15,7 +17,9 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 public class OpenWeatherService {
@@ -69,7 +73,14 @@ public class OpenWeatherService {
             readJson(connection, result);
 
             Gson gson = new GsonBuilder().create();
-            return gson.fromJson(result.toString(), WeatherDto.class);
+            WeatherApiResponse weatherApiResponse = gson.fromJson(result.toString(), WeatherApiResponse.class);
+
+            return WeatherDto.builder()
+                    .description(weatherApiResponse.getWeather().get(0).getDescription())
+                    .iconName(weatherApiResponse.getWeather().get(0).getMain())
+                    .temperature(weatherApiResponse.getMain().getTemperature())
+                    .country(weatherApiResponse.getSys().getCountry())
+                    .build();
 
 
         } catch (IOException e) {

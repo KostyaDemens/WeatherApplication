@@ -1,24 +1,33 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
 import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
-import by.bsuir.kostyademens.weatherapplication.dto.WeatherDto;
+
+import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
     private final LocationDao locationDao = new LocationDao();
+    private final OpenWeatherService weatherService = new OpenWeatherService();
 
-    public boolean isUserHasForecast(User user, WeatherDto weatherDto) {
-        List<Location> userLocations = locationDao.findUserLocations(user);
-        for (Location location : userLocations) {
-            if (location.getLatitude().compareTo(weatherDto.getCoord().getLatitude()) == 0 &&
-                    location.getLongitude().compareTo(weatherDto.getCoord().getLongitude()) == 0) {
-                return true;
-            }
+    public List<LocationDto> getUserLocations(User user) {
+        List<Location> locations = locationDao.findUserLocations(user);
+        List<LocationDto> userLocations = new ArrayList<>();
+        for (Location location : locations) {
+            LocationDto locationDto = LocationDto.builder()
+                    .name(location.getName())
+                    .weather(weatherService.getWeatherForecast(location.getLatitude(), location.getLongitude()))
+                    .hasLocation(true)
+                    .latitude(location.getLatitude())
+                    .longitude(location.getLongitude())
+                    .build();
+            userLocations.add(locationDto);
         }
-        return false;
+
+        return userLocations;
     }
 
 
