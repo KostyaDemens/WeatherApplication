@@ -43,23 +43,16 @@ public class OpenWeatherService {
 
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-
             List<LocationApiResponse> locations = objectMapper.readValue(result.toString(), new TypeReference<>() {});
-
-            Set<String> countries = new HashSet<>();
-
-            locations.removeIf(location -> !countries.add(location.getCountry()));
 
             for (LocationApiResponse location : locations) {
                 LocationDto locationDto = LocationDto.builder()
                 .name(location.getName())
-                        .country(location.getCountry())
                                 .latitude(location.getLat())
                                         .longitude(location.getLon())
                                                 .build();
                 locationDtos.add(locationDto);
             }
-
 
 
             if (locations.isEmpty()) {

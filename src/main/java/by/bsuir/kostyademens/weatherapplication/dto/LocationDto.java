@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Builder
 public class LocationDto {
     private boolean hasLocation;
-    private String country;
+//    private String country;
     private String name;
     private WeatherDto weather;
     private BigDecimal latitude;

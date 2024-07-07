@@ -6,7 +6,9 @@ import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class LocationService {
 
@@ -18,6 +20,8 @@ public class LocationService {
         for (LocationDto location : locations) {
             location.setWeather(weatherService.getWeatherForecast(location.getLatitude(), location.getLongitude()));
         }
+        Set<String> countries = new HashSet<>();
+        locations.removeIf(location -> !countries.add(location.getWeather().getCountry()));
 
         return locations;
     }
