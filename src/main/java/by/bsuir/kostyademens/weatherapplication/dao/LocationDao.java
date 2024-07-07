@@ -4,6 +4,7 @@ import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -35,15 +36,14 @@ public class LocationDao {
         }
     }
 
-    public void deleteByCoordinates(BigDecimal longitude, BigDecimal latitude, User user) {
+    public void delete(Location location) {
         try (Session session = sessionFactoryUtil.getSession()) {
             session.beginTransaction();
-            Location location = session.createQuery("FROM Location l WHERE l.longitude = :longitude AND l.latitude = :latitude AND l.user = :user", Location.class)
-                            .setParameter("longitude", longitude)
-                                    .setParameter("latitude", latitude)
-                    .setParameter("user", user)
-                                            .getSingleResult();
-            session.remove(location);
+            Query query = session.createQuery("DELETE FROM Location l WHERE l.user = :user AND l.latitude = :lat AND l.longitude = :lon")
+                            .setParameter("user", location.getUser())
+                                    .setParameter("lat", location.getLatitude())
+                                            .setParameter("lon", location.getLongitude());
+            query.executeUpdate();
             session.getTransaction().commit();
         }
     }

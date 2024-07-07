@@ -1,6 +1,7 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
 import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
+import by.bsuir.kostyademens.weatherapplication.dto.CoordinatesDto;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.api.WeatherApiResponse;
 
@@ -14,6 +15,14 @@ import java.util.List;
 public class LocationService {
 
     private final LocationDao locationDao = new LocationDao();
-    private final OpenWeatherService weatherService = new OpenWeatherService();
+
+    public void delete(CoordinatesDto coordinatesDto, User user) {
+        Location location = Location.builder()
+                .latitude(coordinatesDto.getLat())
+                .longitude(coordinatesDto.getLon())
+                .user(user)
+                .build();
+        locationDao.delete(location);
+    }
 
 }
