@@ -6,5 +6,5 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Sys {
-    private String country;
+  private String country;
 }

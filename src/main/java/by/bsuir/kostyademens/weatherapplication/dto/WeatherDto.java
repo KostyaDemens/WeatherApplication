@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 @Builder
 public class WeatherDto {
-    private String description;
-    private String iconName;
-    private Long temperature;
-    private String country;
+  private String description;
+  private String iconName;
+  private Long temperature;
+  private String country;
 }

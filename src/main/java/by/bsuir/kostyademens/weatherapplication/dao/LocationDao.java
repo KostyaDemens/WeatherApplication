@@ -3,10 +3,9 @@ package by.bsuir.kostyademens.weatherapplication.dao;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-
-import java.util.List;
 
 public class LocationDao {
 

@@ -1,9 +1,8 @@
 package by.bsuir.kostyademens.weatherapplication.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.math.BigDecimal;
+import lombok.*;
 
 @Getter
 @Setter

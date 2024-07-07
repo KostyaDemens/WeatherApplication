@@ -1,7 +1,6 @@
 package by.bsuir.kostyademens.weatherapplication.validator;
 
 import by.bsuir.kostyademens.weatherapplication.exception.EmailInvalidException;
-
 import javax.mail.internet.InternetAddress;
 
 public class EmailValidator {

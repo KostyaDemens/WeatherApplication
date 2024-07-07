@@ -8,10 +8,10 @@ import lombok.Data;
 @Data
 public class Main {
 
-    @SerializedName("temp")
-    private double temperature;
+  @SerializedName("temp")
+  private double temperature;
 
-    public Long getTemperature() {
-        return (long)temperature;
-    }
+  public Long getTemperature() {
+    return (long) temperature;
+  }
 }

@@ -6,39 +6,41 @@ import jakarta.persistence.NoResultException;
 
 public class SessionDao {
 
-    private final SessionFactoryUtil sessionFactoryUtil;
+  private final SessionFactoryUtil sessionFactoryUtil;
 
-    public SessionDao() {
-        this.sessionFactoryUtil = SessionFactoryUtil.getInstance();
-    }
+  public SessionDao() {
+    this.sessionFactoryUtil = SessionFactoryUtil.getInstance();
+  }
 
-    public void save(Session entity) {
-        try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
-            session.beginTransaction();
-            session.persist(entity);
-            session.getTransaction().commit();
-        }
+  public void save(Session entity) {
+    try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
+      session.beginTransaction();
+      session.persist(entity);
+      session.getTransaction().commit();
     }
+  }
 
-    public Session findById(String uuid) {
-        try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
-            session.beginTransaction();
-            Session entity = session.createQuery("FROM Session s WHERE s.id = :uuid", Session.class)
-                    .setParameter("uuid", uuid)
-                    .getSingleResult();
-            session.getTransaction().commit();
-            return entity;
-        } catch (NoResultException e) {
-            return null;
-        }
+  public Session findById(String uuid) {
+    try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
+      session.beginTransaction();
+      Session entity =
+          session
+              .createQuery("FROM Session s WHERE s.id = :uuid", Session.class)
+              .setParameter("uuid", uuid)
+              .getSingleResult();
+      session.getTransaction().commit();
+      return entity;
+    } catch (NoResultException e) {
+      return null;
     }
+  }
 
-    public void delete(Session entity) {
-        try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
-            session.beginTransaction();
-            session.remove(entity);
-            session.flush();
-            session.getTransaction().commit();
-        }
+  public void delete(Session entity) {
+    try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
+      session.beginTransaction();
+      session.remove(entity);
+      session.flush();
+      session.getTransaction().commit();
     }
+  }
 }

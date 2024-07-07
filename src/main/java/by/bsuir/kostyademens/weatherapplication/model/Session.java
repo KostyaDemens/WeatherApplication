@@ -1,13 +1,12 @@
 package by.bsuir.kostyademens.weatherapplication.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

@@ -7,16 +7,15 @@ import org.hibernate.cfg.Configuration;
 
 public class SessionFactoryUtil {
 
-    @Getter
-    private static final SessionFactoryUtil instance = new SessionFactoryUtil();
+  @Getter private static final SessionFactoryUtil instance = new SessionFactoryUtil();
 
-    private final SessionFactory sessionFactory;
+  private final SessionFactory sessionFactory;
 
-    private SessionFactoryUtil() {
-        sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-    }
+  private SessionFactoryUtil() {
+    sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+  }
 
-    public Session getSession() {
-        return sessionFactory.openSession();
-    }
+  public Session getSession() {
+    return sessionFactory.openSession();
+  }
 }

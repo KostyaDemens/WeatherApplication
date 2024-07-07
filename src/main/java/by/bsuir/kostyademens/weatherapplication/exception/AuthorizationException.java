@@ -1,7 +1,7 @@
 package by.bsuir.kostyademens.weatherapplication.exception;
 
 public class AuthorizationException extends RuntimeException {
-    public AuthorizationException(String message) {
-        super(message);
-    }
+  public AuthorizationException(String message) {
+    super(message);
+  }
 }

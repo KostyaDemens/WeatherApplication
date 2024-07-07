@@ -1,11 +1,9 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
 import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
-
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
-
 import java.util.ArrayList;
 import java.util.List;
 
