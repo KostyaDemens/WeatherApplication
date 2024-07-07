@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @WebServlet("/home-page")
@@ -33,8 +35,15 @@ public class HomePageServlet extends BaseServlet {
                 .build();
 
         User user = (User)req.getAttribute("user");
+        String locationName = req.getParameter("locationName");
 
         locationService.delete(coordinatesDto, user);
+
+        if (!locationName.isEmpty()) {
+            String encodedLocationName = URLEncoder.encode(locationName, StandardCharsets.UTF_8);
+            resp.sendRedirect(req.getContextPath() + "/search?locationName=" + encodedLocationName);
+            return;
+        }
         engine.process("homePage", context, resp.getWriter());
     }
 }

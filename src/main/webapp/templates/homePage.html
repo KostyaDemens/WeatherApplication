@@ -81,6 +81,7 @@
             <form method="post" action="/home-page">
                 <input type="hidden" name="longitude" th:value="${forecast.longitude}">
                 <input type="hidden" name="latitude" th:value="${forecast.latitude}">
+                <input type="hidden" name="locationName" th:value="${param.locationName}">
                 <button type="submit" class="btn-plus btn btn-danger w-100 rounded-pill" style="margin-bottom: 0;">
                     <i class="fas fa-times" style="color: white;"></i>
                 </button>
