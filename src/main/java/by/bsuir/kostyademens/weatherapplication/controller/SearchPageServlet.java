@@ -3,7 +3,6 @@ package by.bsuir.kostyademens.weatherapplication.controller;
 import by.bsuir.kostyademens.weatherapplication.dto.CoordinatesDto;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.model.User;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +17,7 @@ import java.util.List;
 public class SearchPageServlet extends BaseServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         User user = (User) req.getAttribute("user");
         String locationName = req.getParameter("locationName");
         List<LocationDto> locations = locationService.findLocationsByName(locationName);
@@ -35,7 +34,7 @@ public class SearchPageServlet extends BaseServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         User user = (User) req.getAttribute("user");
         CoordinatesDto coordinates = CoordinatesDto.builder()
                 .lat(new BigDecimal(req.getParameter("latitude")))

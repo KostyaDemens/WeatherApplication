@@ -6,7 +6,6 @@ import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class LocationDao {
@@ -39,7 +38,7 @@ public class LocationDao {
     public void delete(Location location) {
         try (Session session = sessionFactoryUtil.getSession()) {
             session.beginTransaction();
-            Query query = session.createQuery("DELETE FROM Location l WHERE l.user = :user AND l.latitude = :lat AND l.longitude = :lon")
+            Query<?> query = session.createQuery("DELETE FROM Location l WHERE l.user = :user AND l.latitude = :lat AND l.longitude = :lon")
                             .setParameter("user", location.getUser())
                                     .setParameter("lat", location.getLatitude())
                                             .setParameter("lon", location.getLongitude());

@@ -3,7 +3,6 @@ package by.bsuir.kostyademens.weatherapplication.controller;
 import by.bsuir.kostyademens.weatherapplication.dto.CoordinatesDto;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.model.User;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +17,7 @@ import java.util.List;
 public class HomePageServlet extends BaseServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         User user = (User)req.getAttribute("user");
         List<LocationDto> userLocations = userService.getUserLocations(user);
         if (!userLocations.isEmpty()) {
@@ -28,7 +27,7 @@ public class HomePageServlet extends BaseServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         CoordinatesDto coordinatesDto = CoordinatesDto.builder()
                 .lon(new BigDecimal(req.getParameter("longitude")))
                 .lat(new BigDecimal(req.getParameter("latitude")))
@@ -44,6 +43,6 @@ public class HomePageServlet extends BaseServlet {
             resp.sendRedirect(req.getContextPath() + "/search?locationName=" + encodedLocationName);
             return;
         }
-        engine.process("homePage", context, resp.getWriter());
+        resp.sendRedirect(req.getContextPath() + "/home-page");
     }
 }
