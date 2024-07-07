@@ -26,8 +26,16 @@ public class UserService {
                     .build();
             userLocations.add(locationDto);
         }
-
         return userLocations;
+    }
+
+    public boolean isUserHasLocation(User user, LocationDto locationDto) {
+        List<Location> locations = locationDao.findUserLocations(user);
+        return locations.stream()
+                .anyMatch(location ->
+                        location.getLatitude().compareTo(locationDto.getLatitude()) == 0 &&
+                        location.getLongitude().compareTo(locationDto.getLongitude()) == 0
+                );
     }
 
 

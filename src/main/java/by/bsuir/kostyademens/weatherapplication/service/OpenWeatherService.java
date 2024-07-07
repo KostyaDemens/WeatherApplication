@@ -1,5 +1,6 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
+import by.bsuir.kostyademens.weatherapplication.api.LocationApiResponse;
 import by.bsuir.kostyademens.weatherapplication.api.WeatherApiResponse;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.dto.WeatherDto;
@@ -17,6 +18,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +31,7 @@ public class OpenWeatherService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<LocationDto> getLocationsByName(String locationName) {
-        List<LocationDto> locations;
+        List<LocationDto> locationDtos = new ArrayList<>();
         try {
             StringBuilder result = new StringBuilder();
             String urlString = WEATHER_API_URL + "geo/1.0/direct?q=" + locationName + "&limit=5&appid=" + API_KEY;
@@ -42,11 +44,22 @@ public class OpenWeatherService {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 
-           locations = objectMapper.readValue(result.toString(), new TypeReference<>() {});
+            List<LocationApiResponse> locations = objectMapper.readValue(result.toString(), new TypeReference<>() {});
 
             Set<String> countries = new HashSet<>();
 
             locations.removeIf(location -> !countries.add(location.getCountry()));
+
+            for (LocationApiResponse location : locations) {
+                LocationDto locationDto = LocationDto.builder()
+                .name(location.getName())
+                        .country(location.getCountry())
+                                .latitude(location.getLat())
+                                        .longitude(location.getLon())
+                                                .build();
+                locationDtos.add(locationDto);
+            }
+
 
 
             if (locations.isEmpty()) {
@@ -57,7 +70,7 @@ public class OpenWeatherService {
             throw new RuntimeException(e);
         }
 
-        return locations;
+        return locationDtos;
 
 
     }
