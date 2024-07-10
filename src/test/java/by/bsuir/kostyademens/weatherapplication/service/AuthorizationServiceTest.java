@@ -12,8 +12,11 @@ import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.validator.PasswordValidator;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -80,6 +83,19 @@ class AuthorizationServiceTest {
             assertEquals(validUser, returnedSession.getUser());
             assertTrue(returnedSession.getExpiresAt().isAfter(LocalDateTime.now()));
         }
+    }
+
+    @Test
+    void getNewCookieTest() {
+        LocalDateTime expiration = LocalDateTime.now().plusHours(5);
+        Session session = new Session("id", validUser, expiration);
+
+        Cookie cookie = authorizationService.getNewCookie(session);
+
+        assertNotNull(cookie);
+        assertEquals(session.getId(), cookie.getValue());
+        assertEquals("session_id", cookie.getName());
+        assertTrue(cookie.getMaxAge() >= 5 * 60 * 60);
     }
 
 }

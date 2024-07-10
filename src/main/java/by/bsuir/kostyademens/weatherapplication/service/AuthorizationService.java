@@ -48,7 +48,7 @@ public class AuthorizationService {
     public Session getNewSession(User user) {
         Session session = new Session();
         session.setUser(user);
-        session.setExpiresAt(LocalDateTime.now().plusMinutes(1));
+        session.setExpiresAt(LocalDateTime.now().plusMinutes(30));
         return session;
     }
 
