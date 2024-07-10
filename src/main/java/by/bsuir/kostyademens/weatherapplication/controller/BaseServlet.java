@@ -16,7 +16,6 @@ public class BaseServlet extends HttpServlet {
 
   protected final AuthorizationService authService = new AuthorizationService();
   protected final RegistrationService registerService = new RegistrationService();
-
   protected final UserService userService = new UserService();
   protected final LocationService locationService = new LocationService();
   protected TemplateEngine engine;

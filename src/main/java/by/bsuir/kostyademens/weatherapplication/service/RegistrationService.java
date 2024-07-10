@@ -4,11 +4,19 @@ import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
 import by.bsuir.kostyademens.weatherapplication.exception.UserAlreadyExistsException;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 
+@AllArgsConstructor
 public class RegistrationService {
 
-  private final UserDao userDao = new UserDao();
+  private final UserDao userDao;
+
+  public RegistrationService() {
+    this.userDao = new UserDao();
+  }
+
+
 
   public void register(User user) {
     Optional<User> potentialUser = userDao.findByLogin(user.getEmail());
