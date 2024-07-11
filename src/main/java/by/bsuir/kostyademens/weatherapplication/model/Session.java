@@ -16,21 +16,16 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "Sessions")
 public class Session {
 
-    @Id
-    @GeneratedValue(generator = "GUID")
-    @GenericGenerator(
-            name = "GUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "id", nullable = false)
-    private String id;
+  @Id
+  @GeneratedValue(generator = "GUID")
+  @GenericGenerator(name = "GUID", strategy = "org.hibernate.id.UUIDGenerator")
+  @Column(name = "id", nullable = false)
+  private String id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+  @OneToOne
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
-    @Column(name = "expires_at", nullable = false)
-    private LocalDateTime expiresAt;
-
-
+  @Column(name = "expires_at", nullable = false)
+  private LocalDateTime expiresAt;
 }

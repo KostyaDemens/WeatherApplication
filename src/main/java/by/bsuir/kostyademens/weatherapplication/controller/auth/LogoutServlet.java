@@ -13,16 +13,19 @@ import java.util.Arrays;
 @WebServlet("/logout")
 public class LogoutServlet extends BaseServlet {
 
-    private final SessionDao sessionDao = new SessionDao();
+  private final SessionDao sessionDao = new SessionDao();
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Cookie[] cookies = req.getCookies();
-        Cookie cookie = Arrays.stream(cookies).filter(n -> n.getName().equals("session_id")).findFirst().orElse(null);
-        assert cookie != null;
-        Session session = authService.getSession(cookie.getValue());
-        sessionDao.delete(session);
-        resp.sendRedirect(req.getContextPath() + "/authorization");
-    }
-
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    Cookie[] cookies = req.getCookies();
+    Cookie cookie =
+        Arrays.stream(cookies)
+            .filter(n -> n.getName().equals("session_id"))
+            .findFirst()
+            .orElse(null);
+    assert cookie != null;
+    Session session = authService.getSession(cookie.getValue());
+    sessionDao.delete(session);
+    resp.sendRedirect(req.getContextPath() + "/authorization");
+  }
 }

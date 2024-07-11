@@ -1,6 +1,5 @@
 package by.bsuir.kostyademens.weatherapplication.filter;
 
-import by.bsuir.kostyademens.weatherapplication.controller.BaseServlet;
 import by.bsuir.kostyademens.weatherapplication.dao.SessionDao;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.service.AuthorizationService;
@@ -9,13 +8,12 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @WebFilter(urlPatterns = {"/*"})
-public class UserSessionFilter implements Filter{
+public class UserSessionFilter implements Filter {
 
   private AuthorizationService authService;
   private SessionDao sessionDao;
@@ -46,7 +44,9 @@ public class UserSessionFilter implements Filter{
         if (session != null) {
           if (session.getExpiresAt().isBefore(LocalDateTime.now())) {
             sessionDao.delete(session);
-            httpRequest.getRequestDispatcher("/templates/sessionExpired.html").forward(httpRequest, httpResponse);
+            httpRequest
+                .getRequestDispatcher("/templates/sessionExpired.html")
+                .forward(httpRequest, httpResponse);
             return;
           } else {
             servletRequest.setAttribute("user", session.getUser());

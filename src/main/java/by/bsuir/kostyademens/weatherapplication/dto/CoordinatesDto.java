@@ -9,6 +9,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class CoordinatesDto {
-    private BigDecimal lat;
-    private BigDecimal lon;
+  private BigDecimal lat;
+  private BigDecimal lon;
 }

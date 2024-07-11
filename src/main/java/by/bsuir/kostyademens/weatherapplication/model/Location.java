@@ -13,28 +13,28 @@ import lombok.*;
 @Table(name = "Locations")
 public class Location {
 
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private Long id;
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  private Long id;
 
-    @Column(name = "name")
-    private String name;
+  @Column(name = "name")
+  private String name;
 
-    @ManyToOne()
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+  @ManyToOne()
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
-    @Column(name = "latitude")
-    private BigDecimal latitude;
+  @Column(name = "latitude")
+  private BigDecimal latitude;
 
-    @Column(name = "longitude")
-    private BigDecimal longitude;
+  @Column(name = "longitude")
+  private BigDecimal longitude;
 
-    public Location(String name, User user, BigDecimal latitude, BigDecimal longitude) {
-        this.name = name;
-        this.user = user;
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
+  public Location(String name, User user, BigDecimal latitude, BigDecimal longitude) {
+    this.name = name;
+    this.user = user;
+    this.latitude = latitude;
+    this.longitude = longitude;
+  }
 }

@@ -1,6 +1,5 @@
 package by.bsuir.kostyademens.weatherapplication.controller.auth;
 
-
 import by.bsuir.kostyademens.weatherapplication.controller.BaseServlet;
 import by.bsuir.kostyademens.weatherapplication.exception.EmailInvalidException;
 import by.bsuir.kostyademens.weatherapplication.exception.PasswordMismatchException;
@@ -20,47 +19,47 @@ import java.util.Map;
 @WebServlet("/registration")
 public class RegistrationServlet extends BaseServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/templates/registration.html").forward(req, resp);
-    }
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
+    req.getRequestDispatcher("/templates/registration.html").forward(req, resp);
+  }
 
-    @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        String confirmedPassword = req.getParameter("confirmedPassword");
+  @Override
+  public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    String email = req.getParameter("email");
+    String password = req.getParameter("password");
+    String confirmedPassword = req.getParameter("confirmedPassword");
 
-        User user = new User(email, password);
+    User user = new User(email, password);
 
+    Map<String, String> errors = new HashMap<>();
 
-        Map<String, String> errors = new HashMap<>();
+    if (ParameterValidator.areNotNull(email, password, confirmedPassword)) {
+      try {
+        PasswordValidator.validatePasswordMatch(password, confirmedPassword);
+      } catch (PasswordMismatchException e) {
+        errors.put("passwordError", e.getMessage());
+      }
 
-            if (ParameterValidator.areNotNull(email, password, confirmedPassword)) {
-                try {
-                    PasswordValidator.validatePasswordMatch(password, confirmedPassword);
-                } catch (PasswordMismatchException e) {
-                    errors.put("passwordError", e.getMessage());
-                }
+      try {
+        EmailValidator.isValidEmail(email);
+      } catch (EmailInvalidException e) {
+        errors.put("emailError", e.getMessage());
+      }
 
-                try {
-                    EmailValidator.isValidEmail(email);
-                } catch (EmailInvalidException e) {
-                    errors.put("emailError", e.getMessage());
-                }
-
-                if (errors.isEmpty()) {
-                    try {
-                        registerService.register(user);
-                        resp.sendRedirect(req.getContextPath() + "/authorization");
-                        return;
-                    } catch (UserAlreadyExistsException e) {
-                        errors.put("emailError", e.getMessage());
-                    }
-                }
-
-                errors.forEach(context::setVariable);
-                engine.process("registration", context, resp.getWriter());
-            }
+      if (errors.isEmpty()) {
+        try {
+          registerService.register(user);
+          resp.sendRedirect(req.getContextPath() + "/authorization");
+          return;
+        } catch (UserAlreadyExistsException e) {
+          errors.put("emailError", e.getMessage());
         }
+      }
+
+      errors.forEach(context::setVariable);
+      engine.process("registration", context, resp.getWriter());
     }
+  }
+}

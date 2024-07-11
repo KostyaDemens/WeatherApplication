@@ -1,7 +1,6 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import by.bsuir.kostyademens.weatherapplication.dao.SessionDao;
@@ -11,12 +10,9 @@ import by.bsuir.kostyademens.weatherapplication.exception.AuthorizationException
 import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.validator.PasswordValidator;
-
-import java.time.LocalDate;
+import jakarta.servlet.http.Cookie;
 import java.time.LocalDateTime;
 import java.util.Optional;
-
-import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,74 +24,71 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class AuthorizationServiceTest {
 
+  private User validUser;
+  private UserDto validUserDto;
 
-    private User validUser;
-    private UserDto validUserDto;
+  @InjectMocks private AuthorizationService authorizationService;
 
+  @Mock private UserDao userDao;
 
-    @InjectMocks
-    private AuthorizationService authorizationService;
+  @Mock private SessionDao sessionDao;
 
-    @Mock
-    private UserDao userDao;
+  @BeforeEach
+  void prepare() {
+    validUserDto = new UserDto("valid@example.com", "validPassword");
+    validUser = new User("valid@example.com", "hashedPassword");
+  }
 
-    @Mock
-    private SessionDao sessionDao;
+  @Test
+  void shouldThrowAnExceptionIfLoginOrPasswordAreNotCorrect() {
+    when(userDao.findByLogin(anyString())).thenReturn(Optional.of(validUser));
 
+    try (MockedStatic<PasswordValidator> mockStatic = mockStatic(PasswordValidator.class)) {
+      mockStatic
+          .when(() -> PasswordValidator.checkPassword(anyString(), anyString()))
+          .thenReturn(false);
 
-    @BeforeEach
-    void prepare() {
-        validUserDto = new UserDto("valid@example.com", "validPassword");
-        validUser = new User("valid@example.com", "hashedPassword");    }
-
-    @Test
-    void shouldThrowAnExceptionIfLoginOrPasswordAreNotCorrect() {
-        when(userDao.findByLogin(anyString())).thenReturn(Optional.of(validUser));
-
-        try (MockedStatic<PasswordValidator> mockStatic = mockStatic(PasswordValidator.class)) {
-            mockStatic.when(() -> PasswordValidator.checkPassword(anyString(), anyString())).thenReturn(false);
-            
-            assertThrows(AuthorizationException.class, () -> authorizationService.login(validUserDto));
-        }
-
+      assertThrows(AuthorizationException.class, () -> authorizationService.login(validUserDto));
     }
+  }
 
-    @Test
-    void shouldThrowAnExceptionIfUserDoesNotExists() {
-        when(userDao.findByLogin(anyString())).thenReturn(Optional.empty());
+  @Test
+  void shouldThrowAnExceptionIfUserDoesNotExists() {
+    when(userDao.findByLogin(anyString())).thenReturn(Optional.empty());
 
-        assertThrows(AuthorizationException.class, () -> authorizationService.login(validUserDto));
+    assertThrows(AuthorizationException.class, () -> authorizationService.login(validUserDto));
+  }
+
+  @Test
+  void shouldReturnSessionIfCredentialsAreValid() {
+    when(userDao.findByLogin(anyString())).thenReturn(Optional.of(validUser));
+
+    try (MockedStatic<PasswordValidator> mockStatic = mockStatic(PasswordValidator.class)) {
+      mockStatic
+          .when(() -> PasswordValidator.checkPassword(anyString(), anyString()))
+          .thenReturn(true);
+
+      Session returnedSession = authorizationService.login(validUserDto);
+
+      verify(sessionDao, times(1)).save(returnedSession);
+
+      assertNotNull(returnedSession);
+
+      assertEquals(validUser, returnedSession.getUser());
+      assertTrue(returnedSession.getExpiresAt().isAfter(LocalDateTime.now()));
     }
+  }
 
-    @Test
-    void shouldReturnSessionIfCredentialsAreValid() {
-        when(userDao.findByLogin(anyString())).thenReturn(Optional.of(validUser));
+  @Test
+  void getNewCookieTest() {
+    LocalDateTime expiration = LocalDateTime.now().plusHours(5);
+    Session session = new Session("id", validUser, expiration);
 
-        try (MockedStatic<PasswordValidator> mockStatic = mockStatic(PasswordValidator.class)) {
-            mockStatic.when(() -> PasswordValidator.checkPassword(anyString(), anyString())).thenReturn(true);
+    Cookie cookie = authorizationService.getNewCookie(session);
 
-            Session returnedSession = authorizationService.login(validUserDto);
-
-            verify(sessionDao, times(1)).save(returnedSession);
-
-            assertNotNull(returnedSession);
-
-            assertEquals(validUser, returnedSession.getUser());
-            assertTrue(returnedSession.getExpiresAt().isAfter(LocalDateTime.now()));
-        }
-    }
-
-    @Test
-    void getNewCookieTest() {
-        LocalDateTime expiration = LocalDateTime.now().plusHours(5);
-        Session session = new Session("id", validUser, expiration);
-
-        Cookie cookie = authorizationService.getNewCookie(session);
-
-        assertNotNull(cookie);
-        assertEquals(session.getId(), cookie.getValue());
-        assertEquals("session_id", cookie.getName());
-        assertTrue(cookie.getMaxAge() >= 5 * 60 * 60);
-    }
-
+    assertNotNull(cookie);
+    assertEquals(session.getId(), cookie.getValue());
+    assertEquals("session_id", cookie.getName());
+    assertTrue(cookie.getMaxAge() >= 5 * 60 * 60);
+  }
 }

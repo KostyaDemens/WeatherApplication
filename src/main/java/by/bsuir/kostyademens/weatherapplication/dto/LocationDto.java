@@ -11,10 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class LocationDto {
-    private boolean hasLocation;
-//    private String country;
-    private String name;
-    private WeatherDto weather;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+  private boolean hasLocation;
+  private String name;
+  private WeatherDto weather;
+  private BigDecimal latitude;
+  private BigDecimal longitude;
+
+  public LocationDto(String name, BigDecimal latitude, BigDecimal longitude) {
+    this.name = name;
+    this.latitude = latitude;
+    this.longitude = longitude;
+  }
 }

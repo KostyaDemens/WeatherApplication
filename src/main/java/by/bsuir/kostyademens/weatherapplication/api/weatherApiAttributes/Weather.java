@@ -6,10 +6,10 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class Weather {
-    private String description;
-    private String main;
+  private String description;
+  private String main;
 
-    public String getMain() {
-        return main.toUpperCase();
-    }
+  public String getMain() {
+    return main.toUpperCase();
+  }
 }

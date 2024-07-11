@@ -8,11 +8,18 @@ import by.bsuir.kostyademens.weatherapplication.model.User;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class LocationService {
 
-  private final LocationDao locationDao = new LocationDao();
-  private final OpenWeatherService weatherService = new OpenWeatherService();
+  private final LocationDao locationDao;
+  private final OpenWeatherService weatherService;
+
+  public LocationService() {
+    this.locationDao = new LocationDao();
+    this.weatherService = new OpenWeatherService();
+  }
 
   public List<LocationDto> findLocationsByName(String locationName) {
     List<LocationDto> locations = weatherService.getLocationsByName(locationName);

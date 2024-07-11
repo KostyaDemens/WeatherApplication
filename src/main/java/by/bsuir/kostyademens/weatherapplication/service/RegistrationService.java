@@ -16,8 +16,6 @@ public class RegistrationService {
     this.userDao = new UserDao();
   }
 
-
-
   public void register(User user) {
     Optional<User> potentialUser = userDao.findByLogin(user.getEmail());
     if (potentialUser.isPresent()) {

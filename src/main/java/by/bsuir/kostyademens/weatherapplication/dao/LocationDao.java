@@ -9,40 +9,45 @@ import org.hibernate.query.Query;
 
 public class LocationDao {
 
-    private final SessionFactoryUtil sessionFactoryUtil;
+  private final SessionFactoryUtil sessionFactoryUtil;
 
-    public LocationDao() {
-        this.sessionFactoryUtil = SessionFactoryUtil.getInstance();
-    }
+  public LocationDao() {
+    this.sessionFactoryUtil = SessionFactoryUtil.getInstance();
+  }
 
-    public void save(Location location) {
-        try (Session session = sessionFactoryUtil.getSession()) {
-            session.beginTransaction();
-            session.persist(location);
-            session.getTransaction().commit();
-        }
+  public void save(Location location) {
+    try (Session session = sessionFactoryUtil.getSession()) {
+      session.beginTransaction();
+      session.persist(location);
+      session.getTransaction().commit();
     }
+  }
 
-    public List<Location> findUserLocations(User user) {
-        try (Session session = sessionFactoryUtil.getSession()) {
-            session.beginTransaction();
-            List<Location> location = session.createQuery("FROM Location l WHERE l.user = :user", Location.class)
-                    .setParameter("user", user)
-                    .getResultList();
-            session.getTransaction().commit();
-            return location;
-        }
+  public List<Location> findUserLocations(User user) {
+    try (Session session = sessionFactoryUtil.getSession()) {
+      session.beginTransaction();
+      List<Location> location =
+          session
+              .createQuery("FROM Location l WHERE l.user = :user", Location.class)
+              .setParameter("user", user)
+              .getResultList();
+      session.getTransaction().commit();
+      return location;
     }
+  }
 
-    public void delete(Location location) {
-        try (Session session = sessionFactoryUtil.getSession()) {
-            session.beginTransaction();
-            Query<?> query = session.createQuery("DELETE FROM Location l WHERE l.user = :user AND l.latitude = :lat AND l.longitude = :lon")
-                            .setParameter("user", location.getUser())
-                                    .setParameter("lat", location.getLatitude())
-                                            .setParameter("lon", location.getLongitude());
-            query.executeUpdate();
-            session.getTransaction().commit();
-        }
+  public void delete(Location location) {
+    try (Session session = sessionFactoryUtil.getSession()) {
+      session.beginTransaction();
+      Query<?> query =
+          session
+              .createQuery(
+                  "DELETE FROM Location l WHERE l.user = :user AND l.latitude = :lat AND l.longitude = :lon")
+              .setParameter("user", location.getUser())
+              .setParameter("lat", location.getLatitude())
+              .setParameter("lon", location.getLongitude());
+      query.executeUpdate();
+      session.getTransaction().commit();
     }
+  }
 }

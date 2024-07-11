@@ -3,9 +3,6 @@ package by.bsuir.kostyademens.weatherapplication.dao;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
 import jakarta.persistence.NoResultException;
-import org.hibernate.query.Query;
-
-import java.time.LocalDateTime;
 
 public class SessionDao {
 

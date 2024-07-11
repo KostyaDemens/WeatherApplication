@@ -15,36 +15,37 @@ import java.util.List;
 @WebServlet("/search")
 public class SearchPageServlet extends BaseServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        User user = (User) req.getAttribute("user");
-        String locationName = req.getParameter("locationName");
-        List<LocationDto> locations = locationService.findLocationsByName(locationName);
-        for (LocationDto location : locations) {
-            if (userService.isUserHasLocation(user, location)) {
-                boolean isHasLocation = true;
-                location.setHasLocation(isHasLocation);
-                context.setVariable("hasLocation", isHasLocation);
-            }
-        }
-
-        context.setVariable("forecasts", locations);
-        engine.process("homePage", context, resp.getWriter());
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    User user = (User) req.getAttribute("user");
+    String locationName = req.getParameter("locationName");
+    List<LocationDto> locations = locationService.findLocationsByName(locationName);
+    for (LocationDto location : locations) {
+      if (userService.isUserHasLocation(user, location)) {
+        boolean isHasLocation = true;
+        location.setHasLocation(isHasLocation);
+        context.setVariable("hasLocation", isHasLocation);
+      }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        User user = (User) req.getAttribute("user");
-        CoordinatesDto coordinates = CoordinatesDto.builder()
-                .lat(new BigDecimal(req.getParameter("latitude")))
-                .lon(new BigDecimal(req.getParameter("longitude")))
-                .build();
-        String name = req.getParameter("name");
-        String locationName = req.getParameter("locationName");
+    context.setVariable("forecasts", locations);
+    engine.process("homePage", context, resp.getWriter());
+  }
 
-        locationService.save(name, coordinates, user);
+  @Override
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    User user = (User) req.getAttribute("user");
+    CoordinatesDto coordinates =
+        CoordinatesDto.builder()
+            .lat(new BigDecimal(req.getParameter("latitude")))
+            .lon(new BigDecimal(req.getParameter("longitude")))
+            .build();
+    String name = req.getParameter("name");
+    String locationName = req.getParameter("locationName");
 
-        String encodedLocationName = URLEncoder.encode(locationName, StandardCharsets.UTF_8);
-        resp.sendRedirect(req.getContextPath() + "/search?locationName=" + encodedLocationName);
-    }
+    locationService.save(name, coordinates, user);
+
+    String encodedLocationName = URLEncoder.encode(locationName, StandardCharsets.UTF_8);
+    resp.sendRedirect(req.getContextPath() + "/search?locationName=" + encodedLocationName);
+  }
 }

@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LocationApiResponse {
-    private String name;
-    private String country;
-    private BigDecimal lon;
-    private BigDecimal lat;
+  private String name;
+  private String country;
+  private BigDecimal lon;
+  private BigDecimal lat;
 }
