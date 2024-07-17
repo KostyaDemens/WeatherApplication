@@ -2,6 +2,7 @@ package by.bsuir.kostyademens.weatherapplication.filter;
 
 import by.bsuir.kostyademens.weatherapplication.dao.SessionDao;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
+import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.service.AuthorizationService;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -49,7 +50,7 @@ public class UserSessionFilter implements Filter {
                 .forward(httpRequest, httpResponse);
             return;
           } else {
-            servletRequest.setAttribute("user", session.getUser());
+              servletRequest.setAttribute("user", session.getUser());
           }
         }
       }

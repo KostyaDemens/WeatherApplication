@@ -25,10 +25,10 @@ public class Location {
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
-  @Column(name = "latitude")
+  @Column(name = "latitude", columnDefinition = "numeric")
   private BigDecimal latitude;
 
-  @Column(name = "longitude")
+  @Column(name = "longitude", columnDefinition = "numeric")
   private BigDecimal longitude;
 
   public Location(String name, User user, BigDecimal latitude, BigDecimal longitude) {

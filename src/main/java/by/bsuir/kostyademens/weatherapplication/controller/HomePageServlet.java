@@ -18,6 +18,10 @@ public class HomePageServlet extends BaseServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     User user = (User) req.getAttribute("user");
+    if (user == null) {
+      resp.sendRedirect(req.getContextPath() + "/authorization");
+      return;
+    }
     List<LocationDto> userLocations = userService.getUserLocations(user);
     if (!userLocations.isEmpty()) {
       context.setVariable("forecasts", userLocations);
