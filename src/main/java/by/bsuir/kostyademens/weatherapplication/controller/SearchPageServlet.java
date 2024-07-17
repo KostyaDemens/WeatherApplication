@@ -24,7 +24,8 @@ public class SearchPageServlet extends BaseServlet {
       resp.sendRedirect(req.getContextPath() + "/authorization");
       return;
     }
-    String locationName = req.getParameter("locationName");
+    String locationName = URLEncoder.encode(req.getParameter("locationName"), StandardCharsets.UTF_8);
+
     List<LocationDto> locations;
 
     try {
