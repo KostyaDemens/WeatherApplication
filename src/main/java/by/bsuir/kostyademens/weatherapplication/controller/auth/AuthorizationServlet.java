@@ -35,7 +35,7 @@ public class AuthorizationServlet extends BaseServlet {
       }
     } catch (AuthorizationException e) {
       context.setVariable("authError", e.getMessage());
+      engine.process("authorization", context, resp.getWriter());
     }
-    engine.process("authorization", context, resp.getWriter());
   }
 }

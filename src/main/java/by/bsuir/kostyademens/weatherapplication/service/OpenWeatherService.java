@@ -5,6 +5,7 @@ import by.bsuir.kostyademens.weatherapplication.api.WeatherApiResponse;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.dto.WeatherDto;
 import by.bsuir.kostyademens.weatherapplication.exception.NoSuchCountryException;
+import by.bsuir.kostyademens.weatherapplication.util.PropertyReader;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +14,7 @@ import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -20,29 +22,28 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.NoArgsConstructor;
 
+import static by.bsuir.kostyademens.weatherapplication.util.PropertyReader.fromFile;
+
 @NoArgsConstructor
 public class OpenWeatherService {
 
-  private final String API_KEY = "3725ced7f88e411534bfa17a8f93d01a";
+    private final String API_KEY = fromFile("application.properties").getProperty("API_KEY");
   private final String WEATHER_API_URL = "https://api.openweathermap.org/";
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   public List<LocationDto> getLocationsByName(String locationName) {
     List<LocationDto> locationDtos = new ArrayList<>();
     try {
-      StringBuilder result = new StringBuilder();
       String urlString =
           WEATHER_API_URL + "geo/1.0/direct?q=" + locationName + "&limit=5&appid=" + API_KEY;
       URL url = new URL(urlString);
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setRequestMethod("GET");
 
-      readJson(connection, result);
-
       objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
       List<LocationApiResponse> locations =
-          objectMapper.readValue(result.toString(), new TypeReference<>() {});
+          objectMapper.readValue(readJson(connection), new TypeReference<>() {});
 
       for (LocationApiResponse location : locations) {
         LocationDto locationDto =
@@ -68,25 +69,27 @@ public class OpenWeatherService {
 
   public WeatherDto getWeatherForecast(BigDecimal latitude, BigDecimal longitude) {
     try {
-      StringBuilder result = new StringBuilder();
-      String urlString =
-          WEATHER_API_URL
-              + "data/2.5/weather?lat="
-              + latitude
-              + "&lon="
-              + longitude
-              + "&appid="
-              + API_KEY
-              + "&units=metric";
+
+      String urlString = String.format(
+              "%sdata/2.5/weather?lat=%f&lon=%f&appid=%s&units=metric",
+              WEATHER_API_URL,
+              latitude,
+              longitude,
+              API_KEY
+      );
+
       URL url = new URL(urlString);
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setRequestMethod("GET");
 
-      readJson(connection, result);
 
       Gson gson = new GsonBuilder().create();
-      WeatherApiResponse weatherApiResponse =
-          gson.fromJson(result.toString(), WeatherApiResponse.class);
+      WeatherApiResponse weatherApiResponse;
+      try (Reader reader = new InputStreamReader(connection.getInputStream())) {
+        weatherApiResponse = gson.fromJson(reader, WeatherApiResponse.class);
+      } catch (Exception jsonExc) {
+        throw new RuntimeException(jsonExc);
+      }
 
       return WeatherDto.builder()
           .description(weatherApiResponse.getWeather().get(0).getDescription())
@@ -100,13 +103,15 @@ public class OpenWeatherService {
     }
   }
 
-  private void readJson(HttpURLConnection connection, StringBuilder result) throws IOException {
-    BufferedReader bufferedReader =
-        new BufferedReader(new InputStreamReader(connection.getInputStream()));
-    String line;
-    while ((line = bufferedReader.readLine()) != null) {
-      result.append(line);
+  private String readJson(HttpURLConnection connection) throws IOException {
+    StringBuilder result = new StringBuilder();
+    try (BufferedReader bufferedReader =
+        new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+      String line;
+      while ((line = bufferedReader.readLine()) != null) {
+        result.append(line);
+      }
+      return result.toString();
     }
-    bufferedReader.close();
   }
 }

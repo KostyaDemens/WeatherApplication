@@ -2,7 +2,6 @@ package by.bsuir.kostyademens.weatherapplication.filter;
 
 import by.bsuir.kostyademens.weatherapplication.dao.SessionDao;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
-import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.service.AuthorizationService;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -33,6 +32,11 @@ public class UserSessionFilter implements Filter {
     HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
     Cookie[] cookies = httpRequest.getCookies();
 
+    if (httpRequest.getRequestURI().equals("/authorization") || httpRequest.getRequestURI().equals("/registration")) {
+      filterChain.doFilter(servletRequest, servletResponse);
+      return;
+    }
+
     if (cookies != null) {
 
       Cookie cookie =
@@ -48,14 +52,15 @@ public class UserSessionFilter implements Filter {
             httpRequest
                 .getRequestDispatcher("/templates/sessionExpired.html")
                 .forward(httpRequest, httpResponse);
-            return;
           } else {
               servletRequest.setAttribute("user", session.getUser());
+              filterChain.doFilter(servletRequest, servletResponse);
+              return;
           }
         }
       }
     }
 
-    filterChain.doFilter(servletRequest, servletResponse);
+    httpResponse.sendRedirect(httpRequest.getContextPath() + "/authorization");
   }
 }

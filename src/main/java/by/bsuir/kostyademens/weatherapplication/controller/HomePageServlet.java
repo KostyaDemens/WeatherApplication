@@ -3,6 +3,7 @@ package by.bsuir.kostyademens.weatherapplication.controller;
 import by.bsuir.kostyademens.weatherapplication.dto.CoordinatesDto;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.model.User;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,10 +19,6 @@ public class HomePageServlet extends BaseServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     User user = (User) req.getAttribute("user");
-    if (user == null) {
-      resp.sendRedirect(req.getContextPath() + "/authorization");
-      return;
-    }
     List<LocationDto> userLocations = userService.getUserLocations(user);
     if (!userLocations.isEmpty()) {
       context.setVariable("forecasts", userLocations);
@@ -30,12 +27,19 @@ public class HomePageServlet extends BaseServlet {
   }
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    CoordinatesDto coordinatesDto =
-        CoordinatesDto.builder()
-            .lon(new BigDecimal(req.getParameter("longitude")))
-            .lat(new BigDecimal(req.getParameter("latitude")))
-            .build();
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+      throws IOException, ServletException {
+
+    CoordinatesDto coordinatesDto;
+    try {
+      BigDecimal longitude = new BigDecimal(req.getParameter("longitude"));
+      BigDecimal latitude = new BigDecimal(req.getParameter("latitude"));
+
+      coordinatesDto = CoordinatesDto.builder().lon(longitude).lat(latitude).build();
+    } catch (NumberFormatException e) {
+      req.getRequestDispatcher("/templates/error.html").forward(req, resp);
+      return;
+    }
 
     User user = (User) req.getAttribute("user");
     String locationName = req.getParameter("locationName");

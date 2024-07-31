@@ -3,6 +3,7 @@ package by.bsuir.kostyademens.weatherapplication.dao;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
 import jakarta.persistence.NoResultException;
+import java.util.Optional;
 
 public class SessionDao {
 
@@ -20,7 +21,7 @@ public class SessionDao {
     }
   }
 
-  public Session findById(String uuid) {
+  public Optional<Session> findById(String uuid) {
     try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
       session.beginTransaction();
       Session entity =
@@ -29,9 +30,9 @@ public class SessionDao {
               .setParameter("uuid", uuid)
               .getSingleResult();
       session.getTransaction().commit();
-      return entity;
+      return Optional.of(entity);
     } catch (NoResultException e) {
-      return null;
+      return Optional.empty();
     }
   }
 
@@ -39,7 +40,6 @@ public class SessionDao {
     try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
       session.beginTransaction();
       session.remove(entity);
-      session.flush();
       session.getTransaction().commit();
     }
   }

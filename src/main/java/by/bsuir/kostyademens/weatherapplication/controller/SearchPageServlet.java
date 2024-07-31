@@ -20,10 +20,6 @@ public class SearchPageServlet extends BaseServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     User user = (User) req.getAttribute("user");
-    if (user == null) {
-      resp.sendRedirect(req.getContextPath() + "/authorization");
-      return;
-    }
     String locationName = URLEncoder.encode(req.getParameter("locationName"), StandardCharsets.UTF_8);
 
     List<LocationDto> locations;

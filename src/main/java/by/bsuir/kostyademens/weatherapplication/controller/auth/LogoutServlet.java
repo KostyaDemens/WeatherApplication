@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 @WebServlet("/logout")
 public class LogoutServlet extends BaseServlet {
@@ -22,8 +23,7 @@ public class LogoutServlet extends BaseServlet {
         Arrays.stream(cookies)
             .filter(n -> n.getName().equals("session_id"))
             .findFirst()
-            .orElse(null);
-    assert cookie != null;
+            .orElseThrow(() -> new NoSuchElementException("Session cookie not found"));
     Session session = authService.getSession(cookie.getValue());
     sessionDao.delete(session);
     resp.sendRedirect(req.getContextPath() + "/authorization");

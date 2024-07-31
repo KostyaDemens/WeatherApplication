@@ -23,11 +23,7 @@ public class RegistrationService {
     } else {
       String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
       user.setPassword(hashedPassword);
-      createNewUser(user);
+      userDao.save(user);
     }
-  }
-
-  public void createNewUser(User user) {
-    userDao.save(user);
   }
 }
