@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,19 +18,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class LocationServiceTest {
 
-  private final List<LocationDto> mockLocations = new ArrayList<>();
   @InjectMocks private LocationService locationService;
   @Mock private OpenWeatherService weatherService;
 
-  @BeforeEach
-  void setUp() {
-    mockLocations.add(new LocationDto("MINSK", BigDecimal.valueOf(123), BigDecimal.valueOf(123)));
-    mockLocations.add(new LocationDto("MINSK", BigDecimal.valueOf(123), BigDecimal.valueOf(123)));
-    mockLocations.add(new LocationDto("MINSK", BigDecimal.valueOf(1234), BigDecimal.valueOf(1234)));
-  }
 
   @Test
   void shouldRemoveLocationIfItHasTheSameCountry() {
+    List<LocationDto> mockLocations = new ArrayList<>();
+    mockLocations.add(new LocationDto("MINSK", BigDecimal.valueOf(123), BigDecimal.valueOf(123)));
+    mockLocations.add(new LocationDto("MINSK", BigDecimal.valueOf(123), BigDecimal.valueOf(123)));
+    mockLocations.add(new LocationDto("MINSK", BigDecimal.valueOf(1234), BigDecimal.valueOf(1234)));
+
+
+
     when(weatherService.getLocationsByName(anyString())).thenReturn(mockLocations);
 
     when(weatherService.getWeatherForecast(BigDecimal.valueOf(123), BigDecimal.valueOf(123)))

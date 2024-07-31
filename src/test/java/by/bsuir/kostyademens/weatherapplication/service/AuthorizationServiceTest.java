@@ -80,7 +80,7 @@ class AuthorizationServiceTest {
   }
 
   @Test
-  void getNewCookieTest() {
+  void shouldCreateCookieWithCorrectAttributes() {
     LocalDateTime expiration = LocalDateTime.now().plusHours(5);
     Session session = new Session("id", validUser, expiration);
 

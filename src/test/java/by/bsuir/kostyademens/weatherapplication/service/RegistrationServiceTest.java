@@ -15,23 +15,26 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class RegistrationServiceTest {
 
-  private static final User IVAN = new User("Ivan", "123");
+  private final User testUser = new User("Ivan", "123");
   @Mock private UserDao userDao;
   @InjectMocks private RegistrationService registrationService;
 
   @Test
   void shouldThrowAnExceptionIfUserAlreadyExists() {
-    when(userDao.findByLogin(IVAN.getEmail())).thenReturn(Optional.of(IVAN));
+    when(userDao.findByLogin(testUser.getEmail())).thenReturn(Optional.of(testUser));
 
-    assertThrows(UserAlreadyExistsException.class, () -> registrationService.register(IVAN));
+    assertThrows(UserAlreadyExistsException.class, () -> registrationService.register(testUser));
+    verify(userDao, times(1)).findByLogin(testUser.getEmail());
   }
 
   @Test
   void shouldSaveUserIfUserDoesNotExists() {
-    when(userDao.findByLogin(IVAN.getEmail())).thenReturn(Optional.empty());
+    when(userDao.findByLogin(testUser.getEmail())).thenReturn(Optional.empty());
 
-    registrationService.register(IVAN);
+    assertTrue(userDao.findByLogin(testUser.getEmail()).isEmpty());
 
-    verify(userDao, times(1)).save(IVAN);
+    registrationService.register(testUser);
+
+    verify(userDao, times(1)).save(testUser);
   }
 }

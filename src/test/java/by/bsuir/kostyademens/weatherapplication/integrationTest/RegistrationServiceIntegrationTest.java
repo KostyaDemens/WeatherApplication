@@ -12,10 +12,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.*;
 
+
 public class RegistrationServiceIntegrationTest {
 
   private static SessionFactory sessionFactory;
-  private User IVAN;
+  private User user;
   private RegistrationService registrationService;
 
   @AfterAll
@@ -25,28 +26,39 @@ public class RegistrationServiceIntegrationTest {
     }
   }
 
-  @BeforeEach
-  void setUp() {
-    IVAN = new User("kostyademens@gmail.com", "123");
-    UserDao userDao = new UserDao();
-    registrationService = new RegistrationService(userDao);
-
+  @BeforeAll
+  static void createSessionFactory() {
     Configuration configuration = new Configuration();
     configuration.configure("hibernate.cfg.xml");
     sessionFactory = configuration.buildSessionFactory();
   }
 
+  @BeforeEach
+  void setUp() {
+    user = new User("user@gmail.com", "123");
+    UserDao userDao = new UserDao();
+    registrationService = new RegistrationService(userDao);
+  }
+
+  @AfterEach
+  void cleanUp() {
+    try (Session session = sessionFactory.openSession()) {
+      session.beginTransaction();
+      session.createQuery("DELETE FROM User").executeUpdate();
+      session.getTransaction().commit();
+    }
+  }
+
   @Test
-  @Order(1)
   void userShouldBeSavedInDataBase() {
-    registrationService.register(IVAN);
+    registrationService.register(user);
 
     try (Session session = sessionFactory.openSession()) {
       session.beginTransaction();
-      User savedUser = session.get(User.class, IVAN.getId());
+      User savedUser = session.get(User.class, user.getId());
 
       assertNotNull(savedUser);
-      assertEquals(IVAN.getEmail(), savedUser.getEmail());
+      assertEquals(user.getEmail(), savedUser.getEmail());
 
       session.getTransaction().commit();
     } catch (Exception e) {
@@ -55,11 +67,23 @@ public class RegistrationServiceIntegrationTest {
   }
 
   @Test
-  @Order(2)
   void shouldThrowAnExceptionIfUserAlreadyExists() {
-    registrationService.createNewUser(IVAN);
+    registrationService.register(user);
+
+    assertNotNull(findById(user.getId()));
 
     Assertions.assertThrows(
-        UserAlreadyExistsException.class, () -> registrationService.register(IVAN));
+        UserAlreadyExistsException.class, () -> registrationService.register(user));
+  }
+
+  private User findById(Long id) {
+    try (Session session = sessionFactory.openSession()) {
+      session.beginTransaction();
+      User user = session.createQuery("FROM User u WHERE u.id = :id", User.class)
+              .setParameter("id", id)
+              .getSingleResult();
+      session.getTransaction().commit();
+      return user;
+    }
   }
 }

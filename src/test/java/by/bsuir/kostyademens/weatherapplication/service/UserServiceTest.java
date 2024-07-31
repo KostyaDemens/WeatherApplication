@@ -1,5 +1,9 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -36,8 +40,8 @@ class UserServiceTest {
 
     mockLocations =
         Arrays.asList(
-            new Location("name", user, BigDecimal.valueOf(1), BigDecimal.valueOf(1)),
-            new Location("name", user, BigDecimal.valueOf(1), BigDecimal.valueOf(1)));
+            new Location("location1", user, BigDecimal.valueOf(1), BigDecimal.valueOf(1)),
+            new Location("location2", user, BigDecimal.valueOf(1), BigDecimal.valueOf(1)));
   }
 
   @Test
@@ -49,8 +53,18 @@ class UserServiceTest {
 
     List<LocationDto> result = userService.getUserLocations(user);
 
+
+    assertThat(result, containsInAnyOrder(
+           hasProperty("name", is("location1")),
+           hasProperty("name", is(("location2")))
+    ));
+
+
+
     assertNotNull(result);
     assertEquals(2, result.size());
+
+
 
     verify(locationDao, times(1)).findUserLocations(user);
     verify(weatherService, times(2))
