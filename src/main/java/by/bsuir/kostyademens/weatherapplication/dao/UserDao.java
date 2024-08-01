@@ -5,6 +5,7 @@ import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
 import jakarta.persistence.NoResultException;
 import java.util.Optional;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class UserDao {
 
@@ -15,11 +16,17 @@ public class UserDao {
   }
 
   public void save(User user) {
-    try (Session session = sessionFactoryUtil.getSession()) {
-      session.beginTransaction();
-      session.persist(user);
-      session.getTransaction().commit();
-    }
+      try (Session session = sessionFactoryUtil.getSession()) {
+          Transaction transaction = session.getTransaction();
+          try {
+            transaction.begin();
+            session.persist(user);
+            transaction.commit();
+          } catch (Exception e) {
+            transaction.rollback();
+            throw new RuntimeException(e);
+          }
+      }
   }
 
   public Optional<User> findByLogin(String email) {

@@ -5,6 +5,7 @@ import by.bsuir.kostyademens.weatherapplication.model.User;
 import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
 import java.util.List;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 public class LocationDao {
@@ -17,9 +18,15 @@ public class LocationDao {
 
   public void save(Location location) {
     try (Session session = sessionFactoryUtil.getSession()) {
-      session.beginTransaction();
-      session.persist(location);
-      session.getTransaction().commit();
+      Transaction transaction = session.getTransaction();
+      try {
+        transaction.begin();
+        session.persist(location);
+        transaction.commit();
+      } catch (Exception e) {
+        transaction.rollback();
+        throw new RuntimeException(e);
+      }
     }
   }
 
@@ -38,16 +45,22 @@ public class LocationDao {
 
   public void delete(Location location) {
     try (Session session = sessionFactoryUtil.getSession()) {
-      session.beginTransaction();
-      Query<?> query =
-          session
-              .createQuery(
-                  "DELETE FROM Location l WHERE l.user = :user AND l.latitude = :lat AND l.longitude = :lon")
-              .setParameter("user", location.getUser())
-              .setParameter("lat", location.getLatitude())
-              .setParameter("lon", location.getLongitude());
-      query.executeUpdate();
-      session.getTransaction().commit();
+      Transaction transaction = session.getTransaction();
+      try {
+        transaction.begin();
+        Query<?> query =
+            session
+                .createQuery(
+                    "DELETE FROM Location l WHERE l.user = :user AND l.latitude = :lat AND l.longitude = :lon")
+                .setParameter("user", location.getUser())
+                .setParameter("lat", location.getLatitude())
+                .setParameter("lon", location.getLongitude());
+        query.executeUpdate();
+        transaction.commit();
+      } catch (Exception e) {
+        transaction.rollback();
+        throw new RuntimeException(e);
+      }
     }
   }
 }

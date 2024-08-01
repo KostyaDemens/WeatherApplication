@@ -4,6 +4,7 @@ import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.util.SessionFactoryUtil;
 import jakarta.persistence.NoResultException;
 import java.util.Optional;
+import org.hibernate.Transaction;
 
 public class SessionDao {
 
@@ -15,9 +16,15 @@ public class SessionDao {
 
   public void save(Session entity) {
     try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
-      session.beginTransaction();
-      session.persist(entity);
-      session.getTransaction().commit();
+      Transaction transaction = session.getTransaction();
+      try {
+        transaction.begin();
+        session.persist(entity);
+        transaction.commit();
+      } catch (Exception e) {
+        transaction.rollback();
+        throw new RuntimeException(e);
+      }
     }
   }
 
@@ -38,9 +45,15 @@ public class SessionDao {
 
   public void delete(Session entity) {
     try (org.hibernate.Session session = sessionFactoryUtil.getSession()) {
-      session.beginTransaction();
-      session.remove(entity);
-      session.getTransaction().commit();
+      Transaction transaction = session.getTransaction();
+      try {
+        transaction.begin();
+        session.remove(entity);
+        transaction.commit();
+      } catch (Exception e) {
+        transaction.rollback();
+        throw new RuntimeException(e);
+      }
     }
   }
 }
