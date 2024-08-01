@@ -33,7 +33,8 @@ public class UserSessionFilter implements Filter {
     HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
     Cookie[] cookies = httpRequest.getCookies();
 
-    if (httpRequest.getRequestURI().equals("/authorization") || httpRequest.getRequestURI().equals("/registration")) {
+    if (httpRequest.getRequestURI().equals("/authorization")
+        || httpRequest.getRequestURI().equals("/registration")) {
       filterChain.doFilter(servletRequest, servletResponse);
       return;
     }
@@ -48,15 +49,17 @@ public class UserSessionFilter implements Filter {
       if (cookie != null) {
         Session session = authService.getSession(cookie.getValue());
         if (session != null) {
-          if (session.getExpiresAt().isBefore(LocalDateTime.now())) {
-            sessionDao.delete(session);
-            httpRequest
-                .getRequestDispatcher("/templates/sessionExpired.html")
-                .forward(httpRequest, httpResponse);
-          } else {
+          if (session.getUser() != null) {
+            if (session.getExpiresAt().isBefore(LocalDateTime.now())) {
+              sessionDao.delete(session);
+              httpRequest
+                  .getRequestDispatcher("/templates/sessionExpired.html")
+                  .forward(httpRequest, httpResponse);
+            } else {
               servletRequest.setAttribute("user", session.getUser());
               filterChain.doFilter(servletRequest, servletResponse);
               return;
+            }
           }
         }
       }

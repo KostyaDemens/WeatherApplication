@@ -6,12 +6,10 @@ import by.bsuir.kostyademens.weatherapplication.dto.UserDto;
 import by.bsuir.kostyademens.weatherapplication.exception.AuthorizationException;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.model.User;
-import by.bsuir.kostyademens.weatherapplication.util.PropertyReader;
 import by.bsuir.kostyademens.weatherapplication.validator.PasswordValidator;
 import jakarta.servlet.http.Cookie;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
 
 import static by.bsuir.kostyademens.weatherapplication.util.PropertyReader.fromFile;
 
