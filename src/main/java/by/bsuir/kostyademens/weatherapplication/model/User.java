@@ -10,14 +10,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(
-    name = "Users",
-    uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@Table(name = "Users")
 public class User {
 
   @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Id
   private Long id;
 

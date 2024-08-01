@@ -9,8 +9,6 @@ import by.bsuir.kostyademens.weatherapplication.util.PropertyReader;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -83,10 +81,11 @@ public class OpenWeatherService {
       connection.setRequestMethod("GET");
 
 
-      Gson gson = new GsonBuilder().create();
       WeatherApiResponse weatherApiResponse;
+      ObjectMapper objectMapper = new ObjectMapper();
+
       try (Reader reader = new InputStreamReader(connection.getInputStream())) {
-        weatherApiResponse = gson.fromJson(reader, WeatherApiResponse.class);
+        weatherApiResponse = objectMapper.readValue(reader, WeatherApiResponse.class);
       } catch (Exception jsonExc) {
         throw new RuntimeException(jsonExc);
       }

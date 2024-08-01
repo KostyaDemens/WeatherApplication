@@ -15,15 +15,15 @@ import lombok.AllArgsConstructor;
 
 import static by.bsuir.kostyademens.weatherapplication.util.PropertyReader.fromFile;
 
-@AllArgsConstructor
+
 public class AuthorizationService {
 
   private final SessionDao sessionDao;
   private final UserDao userDao;
 
-  public AuthorizationService() {
-    this.sessionDao = new SessionDao();
-    this.userDao = new UserDao();
+  public AuthorizationService(SessionDao sessionDao, UserDao userDao) {
+    this.sessionDao = sessionDao;
+    this.userDao = userDao;
   }
 
   public Session login(UserDto userDto) {

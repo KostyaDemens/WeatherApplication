@@ -7,13 +7,13 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 
-@AllArgsConstructor
+
 public class RegistrationService {
 
   private final UserDao userDao;
 
-  public RegistrationService() {
-    this.userDao = new UserDao();
+  public RegistrationService(UserDao userDao) {
+    this.userDao = userDao;
   }
 
   public void register(User user) {

@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+
 public class LocationService {
 
   private final LocationDao locationDao;
   private final OpenWeatherService weatherService;
 
-  public LocationService() {
-    this.locationDao = new LocationDao();
-    this.weatherService = new OpenWeatherService();
+  public LocationService(LocationDao locationDao, OpenWeatherService openWeatherService) {
+    this.locationDao = locationDao;
+    this.weatherService = openWeatherService;
   }
 
   public List<LocationDto> findLocationsByName(String locationName) {

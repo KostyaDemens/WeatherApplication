@@ -1,6 +1,7 @@
 package by.bsuir.kostyademens.weatherapplication.filter;
 
 import by.bsuir.kostyademens.weatherapplication.dao.SessionDao;
+import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.service.AuthorizationService;
 import jakarta.servlet.*;
@@ -16,12 +17,12 @@ import java.util.Arrays;
 public class UserSessionFilter implements Filter {
 
   private AuthorizationService authService;
-  private SessionDao sessionDao;
+  private final SessionDao sessionDao = new SessionDao();
+  private final UserDao userDao = new UserDao();
 
   @Override
   public void init(FilterConfig filterConfig) {
-    authService = new AuthorizationService();
-    sessionDao = new SessionDao();
+    authService = new AuthorizationService(sessionDao, userDao);
   }
 
   @Override

@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+
 public class UserService {
   private final LocationDao locationDao;
   private final OpenWeatherService weatherService;
 
-  public UserService() {
-    this.locationDao = new LocationDao();
-    this.weatherService = new OpenWeatherService();
+  public UserService(LocationDao locationDao, OpenWeatherService openWeatherService) {
+    this.locationDao = locationDao;
+    this.weatherService = openWeatherService;
   }
 
   public List<LocationDto> getUserLocations(User user) {

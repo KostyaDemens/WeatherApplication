@@ -1,5 +1,8 @@
 package by.bsuir.kostyademens.weatherapplication.controller;
 
+import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
+import by.bsuir.kostyademens.weatherapplication.dao.SessionDao;
+import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
 import by.bsuir.kostyademens.weatherapplication.service.*;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -7,6 +10,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.web.IWebExchange;
@@ -14,10 +20,19 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 public class BaseServlet extends HttpServlet {
 
-  protected final AuthorizationService authService = new AuthorizationService();
-  protected final RegistrationService registerService = new RegistrationService();
-  protected final UserService userService = new UserService();
-  protected final LocationService locationService = new LocationService();
+  private final LocationDao locationDao = new LocationDao();
+  private final SessionDao sessionDao = new SessionDao();
+  private final UserDao userDao = new UserDao();
+  private static final Logger logger = Logger.getLogger(BaseServlet.class.getName());
+
+  private final OpenWeatherService openWeatherService = new OpenWeatherService();
+  protected final AuthorizationService authService = new AuthorizationService(sessionDao, userDao);
+  protected final RegistrationService registerService = new RegistrationService(userDao);
+  protected final UserService userService = new UserService(locationDao, openWeatherService);
+  protected final LocationService locationService = new LocationService(locationDao, openWeatherService);
+
+
+
   protected TemplateEngine engine;
 
   protected WebContext context;
@@ -37,7 +52,8 @@ public class BaseServlet extends HttpServlet {
     try {
       super.service(req, resp);
     } catch (Exception e) {
-      context.setVariable("error", e.getMessage());
+      logger.log(Level.SEVERE, "An error occurred during request processing", e);
+      context.setVariable("error", "Произошла ошибка, попробуйте позже");
       engine.process("error", context, resp.getWriter());
     }
   }
