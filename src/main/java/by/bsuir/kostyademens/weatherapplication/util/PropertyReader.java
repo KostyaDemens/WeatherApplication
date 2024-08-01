@@ -6,13 +6,13 @@ import java.util.Properties;
 
 public class PropertyReader {
 
-    public static Properties fromFile(String filename) {
-        Properties properties = new Properties();
-        try (InputStream is = PropertyReader.class.getClassLoader().getResourceAsStream(filename)) {
-            properties.load(is);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return properties;
+  public static Properties fromFile(String filename) {
+    Properties properties = new Properties();
+    try (InputStream is = PropertyReader.class.getClassLoader().getResourceAsStream(filename)) {
+      properties.load(is);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
+    return properties;
+  }
 }

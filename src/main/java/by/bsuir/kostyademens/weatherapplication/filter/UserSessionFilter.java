@@ -16,9 +16,9 @@ import java.util.Arrays;
 @WebFilter(urlPatterns = {"/*"})
 public class UserSessionFilter implements Filter {
 
-  private AuthorizationService authService;
   private final SessionDao sessionDao = new SessionDao();
   private final UserDao userDao = new UserDao();
+  private AuthorizationService authService;
 
   @Override
   public void init(FilterConfig filterConfig) {

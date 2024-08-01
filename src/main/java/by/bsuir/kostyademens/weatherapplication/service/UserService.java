@@ -6,8 +6,6 @@ import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-
 
 public class UserService {
   private final LocationDao locationDao;

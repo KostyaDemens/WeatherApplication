@@ -8,8 +8,6 @@ import by.bsuir.kostyademens.weatherapplication.model.User;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import lombok.AllArgsConstructor;
-
 
 public class LocationService {
 

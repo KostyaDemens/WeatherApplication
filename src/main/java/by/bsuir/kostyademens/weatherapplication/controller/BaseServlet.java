@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.web.IWebExchange;
@@ -20,14 +19,13 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 public class BaseServlet extends HttpServlet {
 
+  private static final Logger logger = Logger.getLogger(BaseServlet.class.getName());
   private final LocationDao locationDao = new LocationDao();
   private final SessionDao sessionDao = new SessionDao();
   private final UserDao userDao = new UserDao();
-  private static final Logger logger = Logger.getLogger(BaseServlet.class.getName());
-
-  private final OpenWeatherService openWeatherService = new OpenWeatherService();
   protected final AuthorizationService authService = new AuthorizationService(sessionDao, userDao);
   protected final RegistrationService registerService = new RegistrationService(userDao);
+  private final OpenWeatherService openWeatherService = new OpenWeatherService();
   protected final UserService userService = new UserService(locationDao, openWeatherService);
   protected final LocationService locationService = new LocationService(locationDao, openWeatherService);
 

@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/search")
@@ -20,7 +19,8 @@ public class SearchPageServlet extends BaseServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     User user = (User) req.getAttribute("user");
-    String locationName = URLEncoder.encode(req.getParameter("locationName"), StandardCharsets.UTF_8);
+    String locationName =
+        URLEncoder.encode(req.getParameter("locationName"), StandardCharsets.UTF_8);
 
     List<LocationDto> locations;
 

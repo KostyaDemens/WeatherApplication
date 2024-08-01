@@ -1,11 +1,12 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
+import static by.bsuir.kostyademens.weatherapplication.util.PropertyReader.fromFile;
+
 import by.bsuir.kostyademens.weatherapplication.api.LocationApiResponse;
 import by.bsuir.kostyademens.weatherapplication.api.WeatherApiResponse;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.dto.WeatherDto;
 import by.bsuir.kostyademens.weatherapplication.exception.NoSuchCountryException;
-import by.bsuir.kostyademens.weatherapplication.util.PropertyReader;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,8 +20,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.NoArgsConstructor;
-
-import static by.bsuir.kostyademens.weatherapplication.util.PropertyReader.fromFile;
 
 @NoArgsConstructor
 public class OpenWeatherService {

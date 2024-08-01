@@ -13,7 +13,6 @@ import java.util.Optional;
 
 import static by.bsuir.kostyademens.weatherapplication.util.PropertyReader.fromFile;
 
-
 public class AuthorizationService {
 
   private final SessionDao sessionDao;
@@ -38,14 +37,19 @@ public class AuthorizationService {
 
   public Cookie getNewCookie(Session session) {
     Cookie cookie = new Cookie("session_id", session.getId());
-    cookie.setMaxAge(Integer.parseInt((fromFile("application.properties").getProperty("COOKIE_LIFETIME"))));
+    cookie.setMaxAge(
+        Integer.parseInt((fromFile("application.properties").getProperty("COOKIE_LIFETIME"))));
     return cookie;
   }
 
   public Session getNewSession(User user) {
     Session session = new Session();
     session.setUser(user);
-    session.setExpiresAt(LocalDateTime.now().plusMinutes(Long.parseLong(fromFile("application.properties").getProperty("SESSION_LIFETIME"))));
+    session.setExpiresAt(
+        LocalDateTime.now()
+            .plusMinutes(
+                Long.parseLong(
+                    fromFile("application.properties").getProperty("SESSION_LIFETIME"))));
     return session;
   }
 

@@ -16,17 +16,17 @@ public class UserDao {
   }
 
   public void save(User user) {
-      try (Session session = sessionFactoryUtil.getSession()) {
-          Transaction transaction = session.getTransaction();
-          try {
-            transaction.begin();
-            session.persist(user);
-            transaction.commit();
-          } catch (Exception e) {
-            transaction.rollback();
-            throw new RuntimeException(e);
-          }
+    try (Session session = sessionFactoryUtil.getSession()) {
+      Transaction transaction = session.getTransaction();
+      try {
+        transaction.begin();
+        session.persist(user);
+        transaction.commit();
+      } catch (Exception e) {
+        transaction.rollback();
+        throw new RuntimeException(e);
       }
+    }
   }
 
   public Optional<User> findByLogin(String email) {

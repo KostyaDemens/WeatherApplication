@@ -18,8 +18,10 @@ import lombok.NoArgsConstructor;
 public class WeatherApiResponse {
   @JsonProperty("weather")
   private List<Weather> weather;
+
   @JsonProperty("main")
   private Main main;
+
   @JsonProperty("sys")
   private Sys sys;
 }

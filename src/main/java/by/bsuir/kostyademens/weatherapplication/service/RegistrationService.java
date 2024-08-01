@@ -4,9 +4,8 @@ import by.bsuir.kostyademens.weatherapplication.dao.UserDao;
 import by.bsuir.kostyademens.weatherapplication.exception.UserAlreadyExistsException;
 import by.bsuir.kostyademens.weatherapplication.model.User;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
-import org.mindrot.jbcrypt.BCrypt;
 
+import org.mindrot.jbcrypt.BCrypt;
 
 public class RegistrationService {
 

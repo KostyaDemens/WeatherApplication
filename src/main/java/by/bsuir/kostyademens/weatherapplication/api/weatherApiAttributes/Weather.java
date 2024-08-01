@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class Weather {
   @JsonProperty("description")
   private String description;
+
   @JsonProperty("main")
   private String main;
 
