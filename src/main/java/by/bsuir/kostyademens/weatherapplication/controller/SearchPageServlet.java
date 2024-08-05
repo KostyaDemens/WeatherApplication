@@ -9,8 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @WebServlet("/search")
@@ -19,8 +17,8 @@ public class SearchPageServlet extends BaseServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     User user = (User) req.getAttribute("user");
-    String locationName =
-        URLEncoder.encode(req.getParameter("locationName"), StandardCharsets.UTF_8);
+
+    String locationName = (String) req.getAttribute("locationName");
 
     List<LocationDto> locations;
 
@@ -53,11 +51,11 @@ public class SearchPageServlet extends BaseServlet {
             .lon(new BigDecimal(req.getParameter("longitude")))
             .build();
     String name = req.getParameter("name");
-    String locationName = req.getParameter("locationName");
+    String locationName = (String) req.getAttribute("locationName");
 
     locationService.save(name, coordinates, user);
 
-    String encodedLocationName = URLEncoder.encode(locationName, StandardCharsets.UTF_8);
-    resp.sendRedirect(req.getContextPath() + "/search?locationName=" + encodedLocationName);
+    //    String encodedLocationName = URLEncoder.encode(locationName, StandardCharsets.UTF_8);
+    resp.sendRedirect(req.getContextPath() + "/search?locationName=" + locationName);
   }
 }

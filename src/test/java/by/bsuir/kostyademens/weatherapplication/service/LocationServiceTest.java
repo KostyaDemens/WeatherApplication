@@ -21,15 +21,12 @@ public class LocationServiceTest {
   @InjectMocks private LocationService locationService;
   @Mock private OpenWeatherService weatherService;
 
-
   @Test
   void shouldRemoveLocationIfItHasTheSameCountry() {
     List<LocationDto> mockLocations = new ArrayList<>();
     mockLocations.add(new LocationDto("MINSK", BigDecimal.valueOf(123), BigDecimal.valueOf(123)));
     mockLocations.add(new LocationDto("MINSK", BigDecimal.valueOf(123), BigDecimal.valueOf(123)));
     mockLocations.add(new LocationDto("MINSK", BigDecimal.valueOf(1234), BigDecimal.valueOf(1234)));
-
-
 
     when(weatherService.getLocationsByName(anyString())).thenReturn(mockLocations);
 

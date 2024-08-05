@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 @WebFilter(urlPatterns = {"/*"})
 public class UserSessionFilter implements Filter {
@@ -41,25 +42,24 @@ public class UserSessionFilter implements Filter {
 
     if (cookies != null) {
 
-      Cookie cookie =
-          Arrays.stream(cookies)
-              .filter(n -> n.getName().equals("session_id"))
-              .findFirst()
-              .orElse(null);
-      if (cookie != null) {
-        Session session = authService.getSession(cookie.getValue());
-        if (session != null) {
-          if (session.getUser() != null) {
-            if (session.getExpiresAt().isBefore(LocalDateTime.now())) {
-              sessionDao.delete(session);
+      Optional<Cookie> cookie =
+          Arrays.stream(cookies).filter(n -> n.getName().equals("session_id")).findFirst();
+      if (cookie.isPresent()) {
+        Optional<Session> session = authService.getSession(cookie.get().getValue());
+        if (session.isPresent()) {
+          if (session.get().getUser() != null) {
+            if (session.get().getExpiresAt().isBefore(LocalDateTime.now())) {
+              sessionDao.delete(session.get());
               httpRequest
                   .getRequestDispatcher("/templates/sessionExpired.html")
                   .forward(httpRequest, httpResponse);
             } else {
-              servletRequest.setAttribute("user", session.getUser());
+              servletRequest.setAttribute("user", session.get().getUser());
               filterChain.doFilter(servletRequest, servletResponse);
               return;
             }
+          } else {
+            sessionDao.delete(session.get());
           }
         }
       }

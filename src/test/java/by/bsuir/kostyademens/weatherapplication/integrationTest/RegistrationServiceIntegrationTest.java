@@ -12,7 +12,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.*;
 
-
 public class RegistrationServiceIntegrationTest {
 
   private static SessionFactory sessionFactory;
@@ -53,17 +52,10 @@ public class RegistrationServiceIntegrationTest {
   void userShouldBeSavedInDataBase() {
     registrationService.register(user);
 
-    try (Session session = sessionFactory.openSession()) {
-      session.beginTransaction();
-      User savedUser = session.get(User.class, user.getId());
+    User savedUser = findById(user.getId());
 
-      assertNotNull(savedUser);
-      assertEquals(user.getEmail(), savedUser.getEmail());
-
-      session.getTransaction().commit();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+    assertNotNull(savedUser);
+    assertEquals(savedUser.getEmail(), user.getEmail());
   }
 
   @Test
@@ -79,7 +71,9 @@ public class RegistrationServiceIntegrationTest {
   private User findById(Long id) {
     try (Session session = sessionFactory.openSession()) {
       session.beginTransaction();
-      User user = session.createQuery("FROM User u WHERE u.id = :id", User.class)
+      User user =
+          session
+              .createQuery("FROM User u WHERE u.id = :id", User.class)
               .setParameter("id", id)
               .getSingleResult();
       session.getTransaction().commit();

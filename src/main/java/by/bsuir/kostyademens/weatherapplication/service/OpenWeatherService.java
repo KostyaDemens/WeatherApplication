@@ -1,19 +1,16 @@
 package by.bsuir.kostyademens.weatherapplication.service;
 
-import static by.bsuir.kostyademens.weatherapplication.util.PropertyReader.fromFile;
-
 import by.bsuir.kostyademens.weatherapplication.api.LocationApiResponse;
 import by.bsuir.kostyademens.weatherapplication.api.WeatherApiResponse;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.dto.WeatherDto;
 import by.bsuir.kostyademens.weatherapplication.exception.NoSuchCountryException;
+import by.bsuir.kostyademens.weatherapplication.exception.OpenWeatherException;
+import by.bsuir.kostyademens.weatherapplication.util.PropertyReader;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -24,23 +21,34 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OpenWeatherService {
 
-    private final String API_KEY = fromFile("application.properties").getProperty("API_KEY");
+  private final String API_KEY = PropertyReader.getProperty("API_KEY");
   private final String WEATHER_API_URL = "https://api.openweathermap.org/";
-  private final ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper objectMapper = new ObjectMapper()
+          .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+  protected HttpURLConnection createConnection(URL url) throws IOException {
+    return (HttpURLConnection) url.openConnection();
+  }
 
   public List<LocationDto> getLocationsByName(String locationName) {
     List<LocationDto> locationDtos = new ArrayList<>();
     try {
-      String urlString =
-          WEATHER_API_URL + "geo/1.0/direct?q=" + locationName + "&limit=5&appid=" + API_KEY;
+      String urlString = String.format(
+              "%sgeo/1.0/direct?q=%s&limit=5&appid=%s",
+              WEATHER_API_URL,
+              locationName,
+              API_KEY
+      );
+
       URL url = new URL(urlString);
-      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      HttpURLConnection connection = createConnection(url);
       connection.setRequestMethod("GET");
 
-      objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      List<LocationApiResponse> locations = objectMapper.readValue(connection.getInputStream(), new TypeReference<>() {});
 
-      List<LocationApiResponse> locations =
-          objectMapper.readValue(readJson(connection), new TypeReference<>() {});
+      if (connection.getResponseCode() >= 400) {
+          throw new OpenWeatherException("OpenWeatherApi exception");
+      }
 
       for (LocationApiResponse location : locations) {
         LocationDto locationDto =
@@ -76,14 +84,13 @@ public class OpenWeatherService {
       );
 
       URL url = new URL(urlString);
-      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      HttpURLConnection connection = createConnection(url);
       connection.setRequestMethod("GET");
 
 
       WeatherApiResponse weatherApiResponse;
-      ObjectMapper objectMapper = new ObjectMapper();
 
-      try (Reader reader = new InputStreamReader(connection.getInputStream())) {
+      try (InputStreamReader reader = new InputStreamReader(connection.getInputStream())) {
         weatherApiResponse = objectMapper.readValue(reader, WeatherApiResponse.class);
       } catch (Exception jsonExc) {
         throw new RuntimeException(jsonExc);
@@ -98,18 +105,6 @@ public class OpenWeatherService {
 
     } catch (IOException e) {
       throw new RuntimeException(e);
-    }
-  }
-
-  private String readJson(HttpURLConnection connection) throws IOException {
-    StringBuilder result = new StringBuilder();
-    try (BufferedReader bufferedReader =
-        new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-      String line;
-      while ((line = bufferedReader.readLine()) != null) {
-        result.append(line);
-      }
-      return result.toString();
     }
   }
 }

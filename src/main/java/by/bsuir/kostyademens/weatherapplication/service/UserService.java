@@ -4,17 +4,15 @@ import by.bsuir.kostyademens.weatherapplication.dao.LocationDao;
 import by.bsuir.kostyademens.weatherapplication.dto.LocationDto;
 import by.bsuir.kostyademens.weatherapplication.model.Location;
 import by.bsuir.kostyademens.weatherapplication.model.User;
+import lombok.RequiredArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class UserService {
   private final LocationDao locationDao;
   private final OpenWeatherService weatherService;
-
-  public UserService(LocationDao locationDao, OpenWeatherService openWeatherService) {
-    this.locationDao = locationDao;
-    this.weatherService = openWeatherService;
-  }
 
   public List<LocationDto> getUserLocations(User user) {
     List<Location> locations = locationDao.findUserLocations(user);

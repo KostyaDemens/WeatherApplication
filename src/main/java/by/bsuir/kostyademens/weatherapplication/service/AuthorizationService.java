@@ -6,22 +6,19 @@ import by.bsuir.kostyademens.weatherapplication.dto.UserDto;
 import by.bsuir.kostyademens.weatherapplication.exception.AuthorizationException;
 import by.bsuir.kostyademens.weatherapplication.model.Session;
 import by.bsuir.kostyademens.weatherapplication.model.User;
+import by.bsuir.kostyademens.weatherapplication.util.PropertyReader;
 import by.bsuir.kostyademens.weatherapplication.validator.PasswordValidator;
 import jakarta.servlet.http.Cookie;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static by.bsuir.kostyademens.weatherapplication.util.PropertyReader.fromFile;
-
+@RequiredArgsConstructor
 public class AuthorizationService {
 
   private final SessionDao sessionDao;
   private final UserDao userDao;
-
-  public AuthorizationService(SessionDao sessionDao, UserDao userDao) {
-    this.sessionDao = sessionDao;
-    this.userDao = userDao;
-  }
 
   public Session login(UserDto userDto) {
     Optional<User> user = userDao.findByLogin(userDto.getEmail());
@@ -37,8 +34,7 @@ public class AuthorizationService {
 
   public Cookie getNewCookie(Session session) {
     Cookie cookie = new Cookie("session_id", session.getId());
-    cookie.setMaxAge(
-        Integer.parseInt((fromFile("application.properties").getProperty("COOKIE_LIFETIME"))));
+    cookie.setMaxAge(Integer.parseInt(PropertyReader.getProperty("COOKIE_LIFETIME")));
     return cookie;
   }
 
@@ -47,13 +43,11 @@ public class AuthorizationService {
     session.setUser(user);
     session.setExpiresAt(
         LocalDateTime.now()
-            .plusMinutes(
-                Long.parseLong(
-                    fromFile("application.properties").getProperty("SESSION_LIFETIME"))));
+            .plusMinutes(Long.parseLong(PropertyReader.getProperty("SESSION_LIFETIME"))));
     return session;
   }
 
-  public Session getSession(String uuid) {
-    return sessionDao.findById(uuid).orElse(null);
+  public Optional<Session> getSession(String uuid) {
+    return sessionDao.findById(uuid);
   }
 }

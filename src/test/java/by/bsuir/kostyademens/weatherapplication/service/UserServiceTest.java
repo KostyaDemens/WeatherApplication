@@ -53,18 +53,13 @@ class UserServiceTest {
 
     List<LocationDto> result = userService.getUserLocations(user);
 
-
-    assertThat(result, containsInAnyOrder(
-           hasProperty("name", is("location1")),
-           hasProperty("name", is(("location2")))
-    ));
-
-
+    assertThat(
+        result,
+        containsInAnyOrder(
+            hasProperty("name", is("location1")), hasProperty("name", is(("location2")))));
 
     assertNotNull(result);
     assertEquals(2, result.size());
-
-
 
     verify(locationDao, times(1)).findUserLocations(user);
     verify(weatherService, times(2))

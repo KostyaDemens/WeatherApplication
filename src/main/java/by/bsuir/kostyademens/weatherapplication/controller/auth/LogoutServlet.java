@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @WebServlet("/logout")
 public class LogoutServlet extends BaseServlet {
@@ -24,8 +25,8 @@ public class LogoutServlet extends BaseServlet {
             .filter(n -> n.getName().equals("session_id"))
             .findFirst()
             .orElseThrow(() -> new NoSuchElementException("Session cookie not found"));
-    Session session = authService.getSession(cookie.getValue());
-    sessionDao.delete(session);
+    Optional<Session> session = authService.getSession(cookie.getValue());
+    sessionDao.delete(session.orElseThrow());
     resp.sendRedirect(req.getContextPath() + "/authorization");
   }
 }
